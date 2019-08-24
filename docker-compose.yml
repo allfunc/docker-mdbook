@@ -5,7 +5,8 @@ services:
     image: hillliu/mdbook
     command: ["serve", "-p", "80", "-n", "0.0.0.0"]
     volumes:
-      - "${SRC}:/mdbook" 
+      - "${SRC:-/tmp/mdbook-demo}:/mdbook" 
+      - "${DEST:-/tmp/book}:/mdbook/book" 
     ports:
       - "${WEB:-3000}:80"
       - "${SOCKET:-3001}:3001"
