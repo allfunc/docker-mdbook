@@ -7,5 +7,5 @@ services:
     volumes:
       - "${SRC}:/mdbook" 
     ports:
-      - "3000:80"
-      - "3001:3001"
+      - "${WEB:-3000}:80"
+      - "${SOCKET:-3001}:3001"

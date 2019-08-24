@@ -1,6 +1,8 @@
 FROM ekidd/rust-musl-builder AS builder
 
-RUN cargo install mdbook --vers 0.2.1
+ARG VERSION=${VERSION:-0.3.1}
+
+RUN cargo install mdbook --vers ${VERSION} 
 
 FROM alpine:latest
 
@@ -8,9 +10,7 @@ COPY --from=builder \
     /home/rust/.cargo/bin/mdbook \
     /usr/local/bin/
 
-ENV BOOKDIR /mdbook
-
-WORKDIR $BOOKDIR
+WORKDIR /mdbook
 
 ENTRYPOINT ["/usr/local/bin/mdbook"]
 CMD ["--help"]
