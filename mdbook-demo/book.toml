@@ -3,3 +3,15 @@ authors = []
 language = "en"
 multilingual = false
 src = "src"
+
+[preprocessor.toc]
+command = "mdbook-toc"
+renderer = ["html"]
+
+[preprocessor.mermaid]
+command = "mdbook-mermaid"
+renderer = ["html"]
+
+[output.html]
+additional-css = ["assets/mermaid.css"]
+additional-js = ["assets/mermaid.min.js"]
