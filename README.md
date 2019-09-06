@@ -9,6 +9,8 @@ mdbook alpine
    * https://github.com/badboy/mdbook-toc
 ### mdbook-mermaid
    * https://github.com/badboy/mdbook-mermaid
+### mdbook-plantuml
+   * https://github.com/sytsereitsma/mdbook-plantuml
 
 ## Docker hub
    * https://hub.docker.com/r/hillliu/mdbook

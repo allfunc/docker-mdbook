@@ -5,6 +5,7 @@ ARG VERSION=${VERSION:-0.3.1}
 RUN cargo install mdbook --vers ${VERSION}
 RUN cargo install mdbook-toc --vers 0.2.2
 RUN cargo install mdbook-mermaid --vers 0.2.2
+RUN cargo install mdbook-plantuml --vers 0.3.0 
 
 FROM alpine:latest
 
@@ -16,6 +17,9 @@ COPY --from=builder \
     /usr/local/bin/
 COPY --from=builder \
     /home/rust/.cargo/bin/mdbook-mermaid \
+    /usr/local/bin/
+COPY --from=builder \
+    /home/rust/.cargo/bin/mdbook-plantuml \
     /usr/local/bin/
 
 WORKDIR /mdbook
