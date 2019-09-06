@@ -12,6 +12,9 @@ renderer = ["html"]
 command = "mdbook-mermaid"
 renderer = ["html"]
 
+[preprocessor.plantuml]
+plantuml-cmd="mdbook-plantuml"
+
 [output.html]
 additional-css = ["assets/mermaid.css"]
 additional-js = ["assets/mermaid.min.js"]
