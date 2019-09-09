@@ -11,6 +11,8 @@ mdbook alpine
    * https://github.com/badboy/mdbook-mermaid
 ### mdbook-plantuml
    * https://github.com/sytsereitsma/mdbook-plantuml
+### mdbook-presentation-preprocessor 
+   * https://github.com/FreeMasen/mdbook-presentation-preprocessor 
 
 ## Docker hub
    * https://hub.docker.com/r/hillliu/mdbook
