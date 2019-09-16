@@ -13,7 +13,7 @@ command = "mdbook-mermaid"
 renderer = ["html"]
 
 [preprocessor.plantuml]
-plantuml-cmd="docker run --rm -i think/plantuml"
+plantuml-cmd="java -jar /app/plantuml.jar"
 
 [preprocessor.presentation-preprocessor]
 

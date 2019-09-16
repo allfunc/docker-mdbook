@@ -1,12 +1,18 @@
 #!/bin/bash
 
 start() {
-docker run -d -p 3000:80 -p 3001:3001 -v "$(pwd):/mdbook/src" --name mdbook hillliu/mdbook serve -p 80 -n 0.0.0.0
+  stop
+  docker run -d -p 3000:3000 -p 3001:3001 -v /var/run/docker.sock:/var/run/docker.sock \
+    -v "$(pwd)/mdbook-demo/src:/mdbook/src" --name mdbook hillliu/mdbook serve -n 0.0.0.0 
 }
 
 stop() {
-docker stop mdbook
-docker rm mdbook
+  docker stop mdbook
+  docker rm mdbook
+}
+
+logs() {
+  docker logs -f mdbook
 }
 
 case "$1" in
@@ -16,8 +22,11 @@ case "$1" in
   stop)
     stop 
     ;;
+  logs)
+    logs 
+    ;;
   *)
-    echo "$0 [start|stop]" 
+    echo "$0 [start|stop|logs]" 
     exit
 esac
 

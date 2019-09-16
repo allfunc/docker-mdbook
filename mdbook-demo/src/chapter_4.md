@@ -1,4 +1,4 @@
-# Chapter 4 
+# Mermaid
 
 * [mdbook-mermaid](https://github.com/badboy/mdbook-mermaid)
 
