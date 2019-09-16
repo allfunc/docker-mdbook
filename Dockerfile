@@ -31,7 +31,6 @@ RUN (rm /tmp/* 2>/dev/null || true) \
 
 WORKDIR /mdbook
 COPY ./mdbook-demo ./
-COPY ./plantuml /usr/local/bin
 
 ENTRYPOINT ["/usr/local/bin/mdbook"]
 CMD ["--help"]
