@@ -16,7 +16,7 @@ fi
 MDBOOK_SRC=${MDBOOK_SRC:-$(pwd)}
 CONTAINER_NAME=${CONTAINER_NAME:-mdbook}
 PORT=${PORT:-3000}
-WS_PORT=${WS_PORT:-3001}
+WS_PORT=${WS_PORT:-$((PORT+1))}
 
 # echo $MDBOOK_SRC
 # echo $CONTAINER_NAME
@@ -57,7 +57,7 @@ case "$1" in
     logs 
     ;;
   *)
-    echo "$0 [start|stop|status|logs]" 
+    echo "$0 [start|stop|status|logs]"
     exit
 esac
 
