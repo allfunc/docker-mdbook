@@ -6,7 +6,7 @@ ENV="${DIR}/.env"
 if [ -e "${ENV}" ]; then
   MDBOOK_SRC=$(awk -F "=" '/^MDBOOK_SRC/ {print $2}' $ENV)
   if [ ! -z "${MDBOOK_SRC}" ]; then
-    MDBOOK_SRC=/$MDBOOK_SRC
+    MDBOOK_SRC=$MDBOOK_SRC
   fi
   CONTAINER_NAME=$(awk -F "=" '/^CONTAINER_NAME/ {print $2}' $ENV)
   PORT=$(awk -F "=" '/^PORT/ {print $2}' $ENV)
@@ -23,6 +23,8 @@ WS_PORT=${WS_PORT:-$((PORT+1))}
 # echo $PORT
 # echo $WS_PORT
 # exit;
+
+echo MDBOOK_SRC: $MDBOOK_SRC
 
 start() {
   stop
