@@ -1,6 +1,20 @@
 mdbook alpine
 ======
 
+## How to use?
+1. create SUMMARY.md file with such content.
+```
+# Summary
+
+- [Chapter 1](./chapter_1.md)
+```
+2. copy preview.sh to same folder.
+3. run following command
+```
+./preview.sh start
+```
+
+
 ## APP
 ### mdbook
    * https://github.com/rust-lang-nursery/mdBook
