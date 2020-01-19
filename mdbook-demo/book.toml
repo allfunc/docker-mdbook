@@ -18,5 +18,5 @@ plantuml-cmd="java -jar /app/plantuml.jar"
 [preprocessor.presentation-preprocessor]
 
 [output.html]
-additional-css = ["assets/mermaid.css"]
-additional-js = ["assets/mermaid.min.js"]
+additional-css = ["assets/mermaid.css", "assets/print.css"]
+additional-js = ["assets/mermaid.min.js", "assets/import-html.js"]
