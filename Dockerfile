@@ -1,6 +1,9 @@
 FROM ekidd/rust-musl-builder AS builder
 
-ARG VERSION=${VERSION:-0.3.5}
+# Volume
+VOLUME ["/home/rust/.cargo/git", "/home/rust/.cargo/registry", "/home/rust/src/target"]
+
+ARG VERSION=${VERSION:-0.3.3}
 
 RUN cargo install mdbook --vers ${VERSION}
 RUN cargo install mdbook-toc --vers 0.2.2
