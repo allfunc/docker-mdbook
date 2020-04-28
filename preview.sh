@@ -24,12 +24,21 @@ WS_PORT=${WS_PORT:-$((PORT+1))}
 # echo $WS_PORT
 # exit;
 
+case "$OSTYPE" in
+  linux*)
+    OpenCmd="echo" 
+    ;;
+  darwin*)
+    OpenCmd="open" 
+    ;;
+esac
+
 start() {
   stop
   docker run -d -p ${PORT}:3000 -p ${WS_PORT}:${WS_PORT} -v /var/run/docker.sock:/var/run/docker.sock \
     -v "${MDBOOK_SRC}:/mdbook/src" --name ${CONTAINER_NAME} hillliu/mdbook serve -n 0.0.0.0 -w ${WS_PORT}
   sleep 5 
-  open http://localhost:${PORT}
+  echo ${OpenCmd} http://localhost:${PORT} | bash
 }
 
 stop() {
