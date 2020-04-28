@@ -1,6 +1,6 @@
 FROM ekidd/rust-musl-builder AS builder
 
-ARG VERSION=${VERSION:-0.3.1}
+ARG VERSION=${VERSION:-0.3.7}
 
 RUN cargo install mdbook --vers ${VERSION}
 RUN cargo install mdbook-toc --vers 0.2.2

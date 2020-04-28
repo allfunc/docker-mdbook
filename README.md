@@ -15,6 +15,12 @@ A set of tool for mdbook.
 ./preview.sh start
 ```
 
+### import html
+   * create any folder (such as public) inside src folder
+```
+<div data-import="/public/import-demo.html"></div>
+```
+
 
 ## APP
 ### mdbook

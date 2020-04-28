@@ -2,17 +2,17 @@
   var w = window;
   var req = function(url, callback, type, query) {
     if (!type) {
-      type = 'GET';
+      type = "GET";
     }
     var request =
-      'undefined' !== typeof w.XDomainRequest
+      "undefined" !== typeof w.XDomainRequest
         ? w.XDomainRequest
         : w.XMLHttpRequest;
     if (!request) {
       return false;
     }
     var oReq = new request();
-    if ('function' === typeof callback) {
+    if ("function" === typeof callback) {
       oReq.onload = function() {
         callback(oReq.responseText);
       };
@@ -25,7 +25,7 @@
     return w.document.querySelector(sel);
   };
   var queryEl = function(el) {
-    return 'string' === typeof el ? queryOne(el) : el;
+    return "string" === typeof el ? queryOne(el) : el;
   };
   w.importHtml = function(dom, url) {
     var el = queryEl(dom);
@@ -33,4 +33,10 @@
       el.innerHTML = html;
     });
   };
+  var attrName = "data-import";
+  var doms = document.querySelectorAll("[" + attrName + "]");
+  for (var i = 0, j = doms.length; i < j; i++) {
+    var dom = doms[i];
+    importHtml(dom, dom.getAttribute(attrName));
+  }
 })();
