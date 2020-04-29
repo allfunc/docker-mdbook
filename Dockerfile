@@ -4,13 +4,13 @@ FROM ekidd/rust-musl-builder AS builder
 VOLUME ["/home/rust/.cargo/git", "/home/rust/src/target"]
 RUN whoami
 
-ARG VERSION=${VERSION:-0.3.7}
+ARG VERSION=${VERSION:-0.3.1}
 
-RUN cargo install mdbook --vers ${VERSION}
-RUN cargo install mdbook-toc --vers 0.2.2
-RUN cargo install mdbook-mermaid --vers 0.2.2
-RUN cargo install mdbook-presentation-preprocessor --vers 0.2.2 
-RUN cargo install mdbook-plantuml --vers 0.4.0 
+RUN cargo install mdbook --vers ${VERSION}; \
+    cargo install mdbook-toc --vers 0.2.2; \
+    cargo install mdbook-mermaid --vers 0.2.2; \
+    cargo install mdbook-presentation-preprocessor --vers 0.2.2; \
+    cargo install mdbook-plantuml --vers 0.4.0
 
 FROM miy4/plantuml
 
