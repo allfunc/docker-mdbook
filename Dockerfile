@@ -10,7 +10,7 @@ RUN cargo install mdbook --vers ${VERSION}; \
     cargo install mdbook-toc --vers 0.2.2; \
     cargo install mdbook-mermaid --vers 0.2.2; \
     cargo install mdbook-presentation-preprocessor --vers 0.2.2; \
-    cargo install mdbook-plantuml --vers 0.4.0
+    cargo install mdbook-plantuml --vers 0.3.0
 
 FROM miy4/plantuml
 
