@@ -20,7 +20,13 @@ A set of tool for mdbook.
 ```
 <div data-import="/public/import-demo.html"></div>
 ```
-
+   * sample md file
+      * https://raw.githubusercontent.com/HillLiu/docker-mdbook/master/mdbook-demo/src/chapter_2.md
+   * sample public folder (could be any)
+      * https://github.com/HillLiu/docker-mdbook/tree/master/mdbook-demo/src/public
+   * sample import html file
+      * https://github.com/HillLiu/docker-mdbook/blob/master/mdbook-demo/src/public/import-demo.html
+   
 
 ## APP
 ### mdbook
