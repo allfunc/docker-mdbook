@@ -44,6 +44,7 @@ A set of tool for mdbook.
 ## Docker hub
    * https://hub.docker.com/r/hillliu/mdbook
 ### update docker image
+```
 docker pull hillliu/mdbook
-
+```
 
