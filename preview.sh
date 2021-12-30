@@ -35,10 +35,13 @@ esac
 
 start() {
   stop
-  docker run -d -p ${PORT}:3000 -p ${WS_PORT}:${WS_PORT} -v /var/run/docker.sock:/var/run/docker.sock \
-    -v "${MDBOOK_SRC}:/mdbook/src" --name ${CONTAINER_NAME} hillliu/mdbook serve -n 0.0.0.0 -w ${WS_PORT}
+  cmd="docker run -d -p ${PORT}:3000 -p ${WS_PORT}:${WS_PORT} -v /var/run/docker.sock:/var/run/docker.sock \
+    -v ${MDBOOK_SRC}:/mdbook/src --name ${CONTAINER_NAME} hillliu/mdbook serve -n 0.0.0.0 -w ${WS_PORT}"
+  echo $cmd;
+  echo $cmd | bash
   sleep 5 
   echo ${OpenCmd} http://localhost:${PORT} | bash
+  logs
 }
 
 stop() {
