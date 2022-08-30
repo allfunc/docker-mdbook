@@ -47,4 +47,7 @@ A set of tool for mdbook.
 ```
 docker pull hillliu/mdbook
 ```
-
+### Troubleshooting
+```
+docker run --rm  hillliu/mdbook -V
+```
