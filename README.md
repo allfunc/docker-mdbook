@@ -4,7 +4,7 @@ A set of tool for mdbook.
 
 ## How to use?
 1. create SUMMARY.md file with such content.
-```
+```markdown
 # Summary
 
 - [Chapter 1](./chapter_1.md)
