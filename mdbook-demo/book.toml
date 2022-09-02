@@ -14,8 +14,6 @@ renderer = ["html"]
 [preprocessor.plantuml]
 plantuml-cmd="java -jar /app/plantuml.jar"
 
-[preprocessor.presentation-preprocessor]
-
 [output.html]
 mathjax-support = true
 additional-css = ["assets/mermaid.css", "assets/print.css"]
