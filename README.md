@@ -41,6 +41,7 @@
    * https://github.com/badboy/mdbook-mermaid
 ### mdbook-plantuml
    * https://github.com/sytsereitsma/mdbook-plantuml
+   * https://plantuml.com/
 ### mdbook-presentation-preprocessor 
    * https://github.com/FreeMasen/mdbook-presentation-preprocessor 
 
