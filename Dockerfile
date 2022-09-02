@@ -6,7 +6,7 @@ ARG VERSION
 
 RUN cargo install mdbook --vers ${VERSION}; \
     cargo install mdbook-toc --vers 0.2.2; \
-    cargo install mdbook-mermaid --vers 0.2.2; \
+    cargo install mdbook-mermaid --vers 0.11.2; \
     cargo install mdbook-presentation-preprocessor --vers 0.2.2; \
     cargo install mdbook-plantuml --vers 0.8.0
 
