@@ -1,0 +1,62 @@
+version: 2.1
+
+executors:
+  docker-publisher:
+    docker:
+      # https://github.com/CircleCI-Public/cimg-base
+      - image: cimg/base:current
+
+jobs:
+  build-and-publish:
+    parameters:
+      docker-tag:
+        type: string
+    executor: docker-publisher
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.7
+          docker_layer_caching: true
+      - run:
+          name: Log time
+          command: date
+      - run:
+          name: Gen Docker file
+          command: |
+            FOLDER_PREFIX=$(support/FOLDER_PREFIX.sh)
+            DOCKER_FILES=$(support/DOCKER_FILES.sh)
+            FOLDER=${FOLDER_PREFIX}<< parameters.docker-tag >>
+            ./build.sh << parameters.docker-tag >>
+            ls -la ${FOLDER}
+            for file in $DOCKER_FILES; do
+              echo ""
+              echo "###"
+              echo "# --- Dockerfile ($file) Content ---"
+              echo "###"
+              echo ""
+              cat ${FOLDER}/$file
+              echo ""
+            done
+      - run:
+          name: build Docker image
+          command: |
+            FOLDER_PREFIX=$(support/FOLDER_PREFIX.sh)
+            IMAGE_NAME=$(support/targetImage.sh)
+            BUILD_VERSION=<< parameters.docker-tag >>
+            BUILD_FOLDER=${FOLDER_PREFIX}<< parameters.docker-tag >>
+            BUILD_ARG=""
+            docker build ${BUILD_ARG} -f ${BUILD_FOLDER}/Dockerfile \
+              -t $IMAGE_NAME:${BUILD_VERSION} \
+              ./${BUILD_FOLDER}
+      - run:
+          name: Publish Docker Image to Docker Hub
+          command: |
+            ./compile.sh p << parameters.docker-tag >>
+
+workflows:
+  run-job:
+    jobs:
+      - build-and-publish:
+          matrix:
+            parameters:
+              docker-tag: ["0.4.21"]

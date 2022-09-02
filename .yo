@@ -1,0 +1,4 @@
+repositoryName=docker-mdbook
+repositoryOrgName=HillLiu
+dockerImageName=mdbook
+dockerOrgName=hillliu

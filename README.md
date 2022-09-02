@@ -1,6 +1,9 @@
-mdbook alpine
-======
-A set of tool for mdbook.
+[![CircleCI](https://circleci.com/gh/HillLiu/docker-mdbook/tree/main.svg?style=svg)](https://circleci.com/gh/HillLiu/docker-mdbook/tree/main)
+[![Docker Pulls](https://img.shields.io/docker/pulls/hillliu/mdbook.svg)](https://hub.docker.com/r/hillliu/mdbook)
+
+# `docker-mdbook` (Alpine)
+
+> A set of tool for mdbook. 
 
 ## How to use?
 1. create SUMMARY.md file with such content.
