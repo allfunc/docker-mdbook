@@ -52,5 +52,5 @@ docker pull hillliu/mdbook
 ```
 ### Troubleshooting
 ```
-docker run --rm  hillliu/mdbook -V
+docker run --rm hillliu/mdbook -V
 ```

@@ -10,18 +10,15 @@ if [ -e "${ENV}" ]; then
   fi
   CONTAINER_NAME=$(awk -F "=" '/^CONTAINER_NAME/ {print $2}' $ENV)
   PORT=$(awk -F "=" '/^PORT/ {print $2}' $ENV)
-  WS_PORT=$(awk -F "=" '/^WS_PORT/ {print $2}' $ENV)
 fi
 
 MDBOOK_SRC=${MDBOOK_SRC:-$DIR}
 CONTAINER_NAME=${CONTAINER_NAME:-mdbook}
 PORT=${PORT:-3000}
-WS_PORT=${WS_PORT:-$((PORT+1))}
 
 # echo $MDBOOK_SRC
 # echo $CONTAINER_NAME
 # echo $PORT
-# echo $WS_PORT
 # exit;
 
 OpenCmd=$(which xdg-open 2>/dev/null)
@@ -38,8 +35,8 @@ esac
 
 start() {
   stop
-  cmd="docker run -p ${PORT}:3000 -p ${WS_PORT}:${WS_PORT} \
-    -v ${MDBOOK_SRC}:/mdbook/src --name ${CONTAINER_NAME} --rm -d hillliu/mdbook serve -n 0.0.0.0 -w ${WS_PORT}"
+  cmd="docker run -p ${PORT}:3000 \
+    -v ${MDBOOK_SRC}:/mdbook/src --name ${CONTAINER_NAME} --rm -d hillliu/mdbook serve -n 0.0.0.0"
   echo $cmd;
   echo $cmd | bash
   sleep 5 
