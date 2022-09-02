@@ -4,11 +4,11 @@ FROM ekidd/rust-musl-builder AS builder
 
 ARG VERSION
 
-RUN cargo install mdbook --vers ${VERSION}; \
-    cargo install mdbook-toc --vers 0.2.2; \
-    cargo install mdbook-mermaid --vers 0.2.2; \
-    cargo install mdbook-presentation-preprocessor --vers 0.2.2; \
-    cargo install mdbook-plantuml --vers 0.8.0
+RUN cargo install mdbook@${VERSION} \
+    mdbook-toc@0.2.2 \
+    mdbook-mermaid@0.2.2 \
+    mdbook-presentation-preprocessor@0.2.2 \
+    mdbook-plantuml@0.8.0;
 
 FROM miy4/plantuml
 
