@@ -1,7 +1,6 @@
 [book]
 authors = []
 language = "en"
-multilingual = false
 src = "src"
 
 [preprocessor.toc]
@@ -18,5 +17,15 @@ plantuml-cmd="java -jar /app/plantuml.jar"
 [preprocessor.presentation-preprocessor]
 
 [output.html]
+mathjax-support = true
 additional-css = ["assets/mermaid.css", "assets/print.css"]
 additional-js = ["assets/mermaid.min.js", "assets/import-html.js"]
+
+[output.html.search]
+limit-results = 20
+use-boolean-and = true
+boost-title = 2
+boost-hierarchy = 2
+boost-paragraph = 1
+expand = true
+heading-split-level = 2
