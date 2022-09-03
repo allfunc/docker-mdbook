@@ -8,3 +8,13 @@
 A --|> B
 @enduml
 ```
+
+```plantuml
+@startjson
+{
+   "fruit":"Apple",
+   "size":"Large",
+   "color": ["Red", "Green"]
+}
+@endjson
+```

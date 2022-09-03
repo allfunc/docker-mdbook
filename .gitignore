@@ -3,3 +3,4 @@ archive.tar
 ver-*
 mdbook-demo/book
 build
+mdbook-plantuml-img/
