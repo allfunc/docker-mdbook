@@ -52,6 +52,16 @@ start() {
   logs
 }
 
+build() {
+  cmd="docker run";
+  if [ -e "${DIR}/book.toml" ]; then
+    cmd+=" -v ${DIR}/book.toml:/mdbook/book.toml";
+  fi
+  cmd+=" -v ${MDBOOK_SRC}:/mdbook/src --rm -d hillliu/mdbook build -d /mdbook/src/dist";
+  echo $cmd;
+  echo $cmd | bash
+}
+
 stop() {
   local res=$(status | tail -1 | awk '{print $(NF)}')
   if [ "x$res" == "x$CONTAINER_NAME" ]; then
@@ -76,6 +86,9 @@ case "$1" in
   stop)
     stop
     ;;
+  build)
+    build
+    ;;
   status)
     status
     ;;
@@ -83,7 +96,7 @@ case "$1" in
     logs
     ;;
   *)
-    echo "$0 [start|stop|status|logs]"
+    echo "$0 [start|stop|build|status|logs]"
     exit
 esac
 
