@@ -57,7 +57,7 @@ build() {
   if [ -e "${DIR}/book.toml" ]; then
     cmd+=" -v ${DIR}/book.toml:/mdbook/book.toml";
   fi
-  cmd+=" -v ${MDBOOK_SRC}:/mdbook/src --rm -d hillliu/mdbook build -d /mdbook/src/dist";
+  cmd+=" -v ${MDBOOK_SRC}:/mdbook/src --rm -d hillliu/mdbook build -d /mdbook/src/docs";
   echo $cmd;
   echo $cmd | bash
 }
