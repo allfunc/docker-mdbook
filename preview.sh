@@ -40,11 +40,11 @@ esac
 
 start() {
   stop
-  cmd="docker run -p ${PORT}:3000";
+  cmd="docker run -p ${PORT}:${PORT}";
   if [ -e "${DIR}/book.toml" ]; then
     cmd+=" -v ${DIR}/book.toml:/mdbook/book.toml";
   fi
-  cmd+=" -v ${MDBOOK_SRC}:/mdbook/src --name ${CONTAINER_NAME} --rm -d hillliu/mdbook serve -n 0.0.0.0";
+  cmd+=" -v ${MDBOOK_SRC}:/mdbook/src --name ${CONTAINER_NAME} --rm -d hillliu/mdbook serve -n 0.0.0.0 -p ${PORT}";
   echo $cmd;
   echo $cmd | bash
   sleep 5 
