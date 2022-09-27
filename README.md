@@ -24,11 +24,11 @@
 <div data-import="/public/import-demo.html"></div>
 ```
    * sample md file
-      * https://github.com/HillLiu/docker-mdbook/master/mdbook-demo/src/importDemo_2.md
+      * https://raw.githubusercontent.com/HillLiu/docker-mdbook/main/mdbook-demo/src/importDemo_2.md
    * sample public folder (could be any)
-      * https://github.com/HillLiu/docker-mdbook/tree/master/mdbook-demo/src/public
+      * https://github.com/HillLiu/docker-mdbook/tree/main/mdbook-demo/src/public
    * sample import html file
-      * https://github.com/HillLiu/docker-mdbook/blob/master/mdbook-demo/src/public/import-demo.html
+      * https://github.com/HillLiu/docker-mdbook/blob/main/mdbook-demo/src/public/import-demo.html
    
 
 ## APP
