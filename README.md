@@ -24,7 +24,7 @@
 <div data-import="/public/import-demo.html"></div>
 ```
    * sample md file
-      * https://raw.githubusercontent.com/HillLiu/docker-mdbook/master/mdbook-demo/src/chapter_2.md
+      * https://github.com/HillLiu/docker-mdbook/master/mdbook-demo/src/importDemo_2.md
    * sample public folder (could be any)
       * https://github.com/HillLiu/docker-mdbook/tree/master/mdbook-demo/src/public
    * sample import html file
