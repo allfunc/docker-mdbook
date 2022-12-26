@@ -13,7 +13,8 @@
 - [Chapter 1](./chapter_1.md)
 ```
 2. copy preview.sh to same folder.
-3. run following command
+   * or download https://raw.githubusercontent.com/HillLiu/docker-mdbook/main/preview.sh
+4. run following command
 ```
 ./preview.sh start
 ```
