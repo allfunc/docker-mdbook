@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-DIR="$( cd "$(dirname "$0")" ; pwd -P )"
+DIR="$(
+  cd "$(dirname "$0")"
+  pwd -P
+)"
 ENV="${DIR}/.env"
 
 if [ -e "${ENV}" ]; then
@@ -21,44 +24,51 @@ PORT=${PORT:-3888}
 # echo $PORT
 # exit;
 
-OpenCmd=$(which xdg-open 2>/dev/null)
+OpenCmd=$(which xdg-open 2> /dev/null)
 case "$OSTYPE" in
   linux*)
-    if [ -z "$OpenCmd" ]; then 
-      OpenCmd="echo" 
+    if [ -z "$OpenCmd" ]; then
+      OpenCmd="echo"
     fi
     ;;
   darwin*)
-    OpenCmd="open" 
+    OpenCmd="open"
     ;;
   *)
-    if [ -z "$OpenCmd" ]; then 
-      OpenCmd="echo" 
+    if [ -z "$OpenCmd" ]; then
+      OpenCmd="echo"
     fi
     ;;
 esac
 
 start() {
   stop
-  cmd="docker run -p ${PORT}:${PORT}";
-  if [ -e "${DIR}/book.toml" ]; then
-    cmd+=" -v ${DIR}/book.toml:/mdbook/book.toml";
+  cmd="docker run -p ${PORT}:${PORT}"
+  if [ ! -e "${DIR}/SUMMARY.md" ]; then
+    cat > ${DIR}/SUMMARY.md << EOF
+# Summary
+
+- [Chapter 1](./chapter_1.md)
+EOF
   fi
-  cmd+=" -v ${MDBOOK_SRC}:/mdbook/src --name ${CONTAINER_NAME} --rm -d hillliu/mdbook serve -n 0.0.0.0 -p ${PORT}";
-  echo $cmd;
+  if [ -e "${DIR}/book.toml" ]; then
+    cmd+=" -v ${DIR}/book.toml:/mdbook/book.toml"
+  fi
+  cmd+=" -v ${MDBOOK_SRC}:/mdbook/src --name ${CONTAINER_NAME} --rm -d hillliu/mdbook serve -n 0.0.0.0 -p ${PORT}"
+  echo $cmd
   echo $cmd | bash
-  sleep 5 
+  sleep 5
   echo ${OpenCmd} http://localhost:${PORT} | bash
   logs
 }
 
 build() {
-  cmd="docker run";
+  cmd="docker run"
   if [ -e "${DIR}/book.toml" ]; then
-    cmd+=" -v ${DIR}/book.toml:/mdbook/book.toml";
+    cmd+=" -v ${DIR}/book.toml:/mdbook/book.toml"
   fi
-  cmd+=" -v ${MDBOOK_SRC}:/mdbook/src --rm -d hillliu/mdbook build -d /mdbook/src/docs";
-  echo $cmd;
+  cmd+=" -v ${MDBOOK_SRC}:/mdbook/src --rm -d hillliu/mdbook build -d /mdbook/src/docs"
+  echo $cmd
   echo $cmd | bash
 }
 
@@ -67,8 +77,8 @@ stop() {
   if [ "x$res" == "x$CONTAINER_NAME" ]; then
     docker stop ${CONTAINER_NAME}
   fi
-#  docker stop ${CONTAINER_NAME}
-#  docker rm ${CONTAINER_NAME}
+  #  docker stop ${CONTAINER_NAME}
+  #  docker rm ${CONTAINER_NAME}
 }
 
 status() {
@@ -98,6 +108,7 @@ case "$1" in
   *)
     echo "$0 [start|stop|build|status|logs]"
     exit
+    ;;
 esac
 
 exit $?
