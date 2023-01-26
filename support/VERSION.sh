@@ -1,5 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env sh
+
 DIR="$( cd "$(dirname "$0")" ; pwd -P )"
+
 ENV=${DIR}/../.env.build
 
 if [ -z $VERSION ]; then

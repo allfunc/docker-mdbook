@@ -1,11 +1,12 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 DIR="$(
   cd "$(dirname "$0")"
   pwd -P
 )"
-sourceImage=$(${DIR}/support/sourceImage.sh)
-targetImage=$(${DIR}/support/targetImage.sh)
+
+localImage=$(${DIR}/support/localImage.sh)
+remoteImage=$(${DIR}/support/remoteImage.sh)
 archiveFile=$DIR/archive.tar
 VERSION=$(${DIR}/support/VERSION.sh)
 DOCKER_FILE=${DOCKER_FILE:-Dockerfile}
@@ -18,14 +19,13 @@ tag() {
   tag=$1
   if [ -z "$tag" ]; then
     if [ -z "$VERSION" ]; then
-      tag=latest
+      tag=${remoteImage}:latest
     else
-      tag=$VERSION
+      tag=${remoteImage}:$VERSION
     fi
   fi
   echo "* <!-- Start to tag: ${tag}"
-  echo $tag
-  docker tag $sourceImage ${targetImage}:$tag
+  docker tag ${localImage} $tag
   list
   echo "* Finish tag -->"
 }
@@ -37,27 +37,30 @@ push() {
     tag=latest
   else
     tag=$PUSH_VERSION
-    if [ "x$LATEST_TAG" != "xlatest" ]; then
+    if [ "x${LATEST_TAG}" != 'xlatest' ]; then
+      echo "LATEST_TAG: $LATEST_TAG"
+      echo ""
       tag=$LATEST_TAG-$PUSH_VERSION
     fi
   fi
-  echo "* <!-- Start to push ${targetImage}:$tag"
+  echo "* <!-- Start to push ${remoteImage}:$tag"
   IS_LOGIN=$(echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_LOGIN" --password-stdin)
-  if ! [[ $IS_LOGIN =~ "Succeeded" ]]; then
+  if [ -z "$IS_LOGIN+y" ] || [ ! "$IS_LOGIN"=~"Succeeded" ]; then
     echo "Login Failed."
     exit 1
   fi
-  docker push ${targetImage}:$tag
+  docker push ${remoteImage}:$tag
   echo "* Finish pushed -->"
   echo ""
   if [ ! -z "$1" ]; then
-    if [ "x$VERSION" == "x$PUSH_VERSION" ]; then
-      echo "* <!-- Start to auto push ${targetImage}:${LATEST_TAG}"
-      docker tag ${targetImage}:$tag ${targetImage}:${LATEST_TAG}
-      docker push ${targetImage}:${LATEST_TAG}
+    if [ "x$VERSION" = "x$PUSH_VERSION" ]; then
+      echo "* <!-- Start to auto push ${remoteImage}:${LATEST_TAG}"
+      docker tag ${remoteImage}:$tag ${remoteImage}:${LATEST_TAG}
+      docker push ${remoteImage}:${LATEST_TAG}
       echo "* Finish pushed -->"
     fi
   fi
+  docker logout
 }
 
 build() {
@@ -74,21 +77,21 @@ build() {
     BUILD_ARG="$BUILD_ARG --build-arg ALT_VERSION=${ALT_VERSION}"
   fi
   echo build: ${DIR}/${DOCKER_FILE}
-  if [ "x" != "x$NO_CACHE" ]; then
+  if [ 'x' != "x$NO_CACHE" ]; then
     echo nocache: ${NO_CACHE}
   fi
-  docker build ${BUILD_ARG} ${NO_CACHE} -f ${DIR}/${DOCKER_FILE} -t $sourceImage ${DIR}
+  docker build ${BUILD_ARG} ${NO_CACHE} -f ${DIR}/${DOCKER_FILE} -t $localImage ${DIR}
   list
 }
 
 save() {
   echo save
-  docker save $sourceImage > $archiveFile
+  docker save $localImage > $archiveFile
 }
 
 restore() {
   echo restore
-  docker save --output $archiveFile $sourceImage
+  docker save --output $archiveFile $localImage
 }
 
 case "$1" in

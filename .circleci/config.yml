@@ -7,6 +7,18 @@ executors:
       - image: cimg/base:current
 
 jobs:
+  test:
+    docker:
+      - image: hillliu/terratest
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.7
+          docker_layer_caching: true
+      - run:
+          name: "Test with terratest"
+          command: |
+            go test -timeout 30m -v ./tests
   build-and-publish:
     parameters:
       docker-tag:
@@ -23,27 +35,27 @@ jobs:
       - run:
           name: Gen Docker file
           command: |
-            FOLDER_PREFIX=$(support/FOLDER_PREFIX.sh)
+            VER_PREFIX=$(support/VER_PREFIX.sh)
             DOCKER_FILES=$(support/DOCKER_FILES.sh)
-            FOLDER=${FOLDER_PREFIX}<< parameters.docker-tag >>
-            ./build.sh << parameters.docker-tag >>
-            ls -la ${FOLDER}
+            BUILD_FOLDER=${VER_PREFIX}-<< parameters.docker-tag >>
+            ./support/build-multi.sh << parameters.docker-tag >>
+            ls -la ${BUILD_FOLDER}
             for file in $DOCKER_FILES; do
               echo ""
               echo "###"
               echo "# --- Dockerfile ($file) Content ---"
               echo "###"
               echo ""
-              cat ${FOLDER}/$file
+              cat ${BUILD_FOLDER}/$file
               echo ""
             done
       - run:
           name: build Docker image
           command: |
-            FOLDER_PREFIX=$(support/FOLDER_PREFIX.sh)
-            IMAGE_NAME=$(support/targetImage.sh)
+            VER_PREFIX=$(support/VER_PREFIX.sh)
+            IMAGE_NAME=$(DOCKER_HUB=1 support/remoteImage.sh)
             BUILD_VERSION=<< parameters.docker-tag >>
-            BUILD_FOLDER=${FOLDER_PREFIX}<< parameters.docker-tag >>
+            BUILD_FOLDER=${VER_PREFIX}-<< parameters.docker-tag >>
             BUILD_ARG=""
             docker build ${BUILD_ARG} -f ${BUILD_FOLDER}/Dockerfile \
               -t $IMAGE_NAME:${BUILD_VERSION} \
@@ -51,12 +63,15 @@ jobs:
       - run:
           name: Publish Docker Image to Docker Hub
           command: |
-            ./compile.sh p << parameters.docker-tag >>
+            DOCKER_HUB=1 ./compile.sh p << parameters.docker-tag >>
 
 workflows:
   run-job:
     jobs:
+      - test
       - build-and-publish:
+          requires:
+            - test
           matrix:
             parameters:
-              docker-tag: ["0.4.21"]
+              docker-tag: ["0.4.25"]

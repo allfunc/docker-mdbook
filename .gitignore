@@ -1,6 +1,3 @@
 archive.tar
 .*.sw?
-ver-*
-mdbook-demo/book
-build
-mdbook-plantuml-img/
+/v*-
