@@ -2,6 +2,11 @@
 
 # docker entrypoint script
 server() {
+  if [ ! -e "/mdbook/SUMMARY.md" ]; then
+    if [ -e "/mdbook/README.md" ]; then
+      ln -s /mdbook/README.md /mdbook/SUMMARY.md
+    fi
+  fi
   /usr/local/bin/mdbook serve -n 0.0.0.0 $PORT
 }
 

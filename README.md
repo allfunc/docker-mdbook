@@ -77,3 +77,5 @@ docker pull hillliu/mdbook
 ```
 docker run --rm hillliu/mdbook -V
 ```
+
+MIT 2023
