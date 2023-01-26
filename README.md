@@ -53,7 +53,7 @@
 
 ## APP
 ### mdbook
-   * https://github.com/rust-lang-nursery/mdBook
+   * https://github.com/rust-lang/mdBook
    * https://crates.io/crates/mdbook
    * DOC http://rust-lang-nursery.github.io/mdBook/index.html
 ### mdbook-toc
