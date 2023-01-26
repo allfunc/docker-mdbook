@@ -5,6 +5,14 @@
 
 > A set of tool for mdbook. 
 
+|Package|Version|
+|-------|-------|
+|mdbook|0.4.25|
+|mdbook-toc|0.11.0|
+|mdbook-mermaid|0.12.6|
+|mdbook-plantuml|0.8.0|
+
+
 ## `GIT`
 
 - https://github.com/HillLiu/docker-mdbook
