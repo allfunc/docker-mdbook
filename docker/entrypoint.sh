@@ -2,12 +2,11 @@
 
 # docker entrypoint script
 server() {
-  LOCAL_ARGS=$@
-  /usr/local/bin/mdbook serve -n 0.0.0.0 $LOCAL_ARGS
+  /usr/local/bin/mdbook serve -n 0.0.0.0 $PORT
 }
 
 if [ "$1" = 'server' ]; then
-  server $@
+  server
 else
   LOCAL_ARGS=$@
   if [ -z "$LOCAL_ARGS" ]; then

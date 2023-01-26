@@ -22,8 +22,8 @@
 
 - [Chapter 1](./chapter_1.md)
 ```
-2. copy preview.sh to same folder.
-   * or download https://raw.githubusercontent.com/HillLiu/docker-mdbook/main/preview.sh
+2. copy bin/preview.sh to same folder.
+   * or download https://raw.githubusercontent.com/HillLiu/docker-mdbook/main/bin/preview.sh
    * chmod +x preview.sh
 4. run following command
 ```
