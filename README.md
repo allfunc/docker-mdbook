@@ -40,7 +40,8 @@
 ./preview.sh start
 ```
 
-### Call bin/preview.sh with curl
+### Curl Example
+
 ```
 curl https://raw.githubusercontent.com/HillLiu/docker-mdbook/main/bin/preview.sh | bash -s -- start
 ```
