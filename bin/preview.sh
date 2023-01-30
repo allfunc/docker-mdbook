@@ -47,13 +47,6 @@ start() {
   # exit;
   stop
   cmd="docker run -p ${PORT}:${PORT} -e PORT=${PORT}"
-  if [ ! -e "${DIR}/SUMMARY.md" ]; then
-    cat > ${DIR}/SUMMARY.md << EOF
-# Summary
-
-- [Chapter 1](./chapter_1.md)
-EOF
-  fi
   if [ -e "${DIR}/book.toml" ]; then
     cmd+=" -v ${DIR}/book.toml:/mdbook/book.toml"
   fi

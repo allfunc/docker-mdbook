@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  mdbook:
+    image: hillliu/mdbook
+    command: ["serve", "-p", "80", "-n", "0.0.0.0"]
+    volumes:
+      - "${SRC:-./mdbook-demo}:/mdbook" 
+      - "${DEST:-./build/book}:/mdbook/book" 
+    ports:
+      - "${WEB:-3000}:80"
