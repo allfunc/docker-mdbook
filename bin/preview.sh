@@ -5,6 +5,7 @@ DIR="$(
   pwd -P
 )"
 ENV="${DIR}/.env"
+IMAGE_NAME="hillliu/mdbook"
 
 if [ -e "${ENV}" ]; then
   MDBOOK_SRC=$(awk -F "=" '/^MDBOOK_SRC/ {print $2}' $ENV)
@@ -20,7 +21,6 @@ fi
 
 MDBOOK_SRC=${MDBOOK_SRC:-$DIR}
 CONTAINER_NAME=${CONTAINER_NAME:-mdbook}
-
 
 OpenCmd=$(which xdg-open 2> /dev/null)
 case "$OSTYPE" in
@@ -50,7 +50,7 @@ start() {
   if [ -e "${DIR}/book.toml" ]; then
     cmd+=" -v ${DIR}/book.toml:/mdbook/book.toml"
   fi
-  cmd+=" -v ${MDBOOK_SRC}:/mdbook/src --name ${CONTAINER_NAME} --rm -d hillliu/mdbook server"
+  cmd+=" -v ${MDBOOK_SRC}:/mdbook/src --name ${CONTAINER_NAME} --rm -d ${IMAGE_NAME} server"
   echo $cmd
   echo $cmd | sh
   sleep 5
@@ -63,7 +63,7 @@ build() {
   if [ -e "${DIR}/book.toml" ]; then
     cmd+=" -v ${DIR}/book.toml:/mdbook/book.toml"
   fi
-  cmd+=" -v ${MDBOOK_SRC}:/mdbook/src --rm -d hillliu/mdbook build -d /mdbook/src/docs"
+  cmd+=" -v ${MDBOOK_SRC}:/mdbook/src --rm -d ${IMAGE_NAME} build -d /mdbook/src/docs"
   echo $cmd
   echo $cmd | sh
 }
@@ -85,6 +85,10 @@ logs() {
   docker logs -f ${CONTAINER_NAME}
 }
 
+pull() {
+  docker pull ${IMAGE_NAME}
+}
+
 case "$1" in
   start)
     start
@@ -101,12 +105,15 @@ case "$1" in
   logs)
     logs
     ;;
+  pull)
+    pull
+    ;;
   *)
     binPath=$0
     if [ "$binPath" == "bash" ] || [ "$binPath" == "sh" ]; then
       binPath="curl https://raw.githubusercontent.com/HillLiu/docker-mdbook/main/bin/preview.sh | bash -s --"
     fi
-    echo "$binPath [start|stop|build|status|logs]"
+    echo "$binPath [start|stop|build|status|logs|pull]"
     exit
     ;;
 esac
