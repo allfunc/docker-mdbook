@@ -105,7 +105,11 @@ case "$1" in
     logs
     ;;
   *)
-    echo "$0 [start|stop|build|status|logs]"
+    binPath=$0
+    if [ "$binPath" == "bash" ] || [ "$binPath" == "sh" ]; then
+      binPath="curl https://raw.githubusercontent.com/HillLiu/docker-mdbook/main/bin/preview.sh | bash -s --"
+    fi
+    echo "$binPath [start|stop|build|status|logs]"
     exit
     ;;
 esac

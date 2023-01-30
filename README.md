@@ -31,16 +31,21 @@
 -   [Chapter 1](./chapter_1.md)
 ```
 
-2. copy bin/preview.sh to same folder.
+2. Copy bin/preview.sh to same folder.
     - or download https://raw.githubusercontent.com/HillLiu/docker-mdbook/main/bin/preview.sh
     - chmod +x preview.sh
-3. run following command
+3. Run following command
 
 ```
 ./preview.sh start
 ```
 
-### import html
+### Call bin/preview.sh with curl
+```
+curl https://raw.githubusercontent.com/HillLiu/docker-mdbook/main/bin/preview.sh | bash -s -- start
+```
+
+### import HTML
 
 -   create any folder (such as public) inside src folder
 
@@ -52,7 +57,7 @@
     -   https://raw.githubusercontent.com/HillLiu/docker-mdbook/main/mdbook-demo/src/importDemo_2.md
 -   sample public folder (could be any)
     -   https://github.com/HillLiu/docker-mdbook/tree/main/mdbook-demo/src/public
--   sample import html file
+-   sample import HTML file
     -   https://github.com/HillLiu/docker-mdbook/blob/main/mdbook-demo/src/public/import-demo.html
 
 ## APP
