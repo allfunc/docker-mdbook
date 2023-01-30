@@ -12,16 +12,15 @@ if [ -e "${ENV}" ]; then
     MDBOOK_SRC=$DIR/$MDBOOK_SRC
   fi
   CONTAINER_NAME=$(awk -F "=" '/^CONTAINER_NAME/ {print $2}' $ENV)
-  PORT=$(awk -F "=" '/^PORT/ {print $2}' $ENV)
+  ENV_PORT=$(awk -F "=" '/^PORT/ {print $2}' $ENV)
+  if [ ! -z "${ENV_PORT}" ]; then
+    PORT=$ENV_PORT
+  fi
 fi
 
 MDBOOK_SRC=${MDBOOK_SRC:-$DIR}
 CONTAINER_NAME=${CONTAINER_NAME:-mdbook}
 
-# echo $MDBOOK_SRC
-# echo $CONTAINER_NAME
-# echo $PORT
-# exit;
 
 OpenCmd=$(which xdg-open 2> /dev/null)
 case "$OSTYPE" in
@@ -41,6 +40,11 @@ case "$OSTYPE" in
 esac
 
 start() {
+  PORT=${PORT:-3888}
+  # echo $MDBOOK_SRC
+  # echo $CONTAINER_NAME
+  # echo $PORT
+  # exit;
   stop
   cmd="docker run -p ${PORT}:${PORT} -e PORT=${PORT}"
   if [ ! -e "${DIR}/SUMMARY.md" ]; then
