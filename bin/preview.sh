@@ -46,7 +46,7 @@ start() {
   # echo $PORT
   # exit;
   stop
-  cmd="docker run -p ${PORT}:${PORT} -e PORT=${PORT}"
+  cmd="docker run -p ${PORT}:${PORT} -e PORT=${PORT} -u $(id -u):$(id -g)"
   if [ -e "${DIR}/book.toml" ]; then
     cmd+=" -v ${DIR}/book.toml:/mdbook/book.toml"
   fi

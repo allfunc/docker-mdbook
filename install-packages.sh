@@ -25,6 +25,8 @@ apk add --virtual .build-deps $BUILD_DEPS && apk add $INSTALL
 
 #/* put your install code here */#
 mv /entrypoint /entrypoint-plantuml
+mkdir -p /mdbook/src
+chmod 0777 -R /mdbook
 
 apk del -f .build-deps && rm -rf /var/cache/apk/* || exit 1
 

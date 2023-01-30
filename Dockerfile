@@ -26,7 +26,7 @@ RUN apk update && apk add bash bc \
   && INSTALL_VERSION=$VERSION install-packages \
   && rm /usr/local/bin/install-packages
 
-WORKDIR /mdbook/src
+WORKDIR /mdbook
 ENV PORT=${PORT:-80}
 
 COPY ./docker/entrypoint.sh /entrypoint.sh
