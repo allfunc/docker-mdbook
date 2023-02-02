@@ -101,4 +101,12 @@ docker pull hillliu/mdbook
 docker run --rm hillliu/mdbook -V
 ```
 
+```
+docker run -p 3888:3888 -e PORT=3888 \
+    -u $(id -u):$(id -g) \
+    -v $(pwd):/mdbook/src \
+    --name mdbook \
+    --rm hillliu/mdbook
+```
+
 MIT 2023
