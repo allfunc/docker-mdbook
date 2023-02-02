@@ -4,15 +4,15 @@
 server() {
   MDBOOK_SRC="/mdbook/src"
   if [ ! -e "${MDBOOK_SRC}/SUMMARY.md" ]; then
-    if [ -e "${MDBOOK_SRC}/README.md" ]; then
-      ln -s ${MDBOOK_SRC}/README.md ${MDBOOK_SRC}/SUMMARY.md
-    else
-      cat > ${MDBOOK_SRC}/SUMMARY.md << EOF
+    if [ ! -e "${MDBOOK_SRC}/README.md" ]; then
+      cat > ${MDBOOK_SRC}/README.md << EOF
 # Summary
 
 - [Chapter 1](./chapter_1.md)
 EOF
     fi
+    cd ${MDBOOK_SRC}
+    ln -s ./README.md ./SUMMARY.md
   fi
   /usr/local/bin/mdbook serve -n 0.0.0.0 -p $PORT
 }
