@@ -13,6 +13,7 @@ EOF
     fi
     cd ${MDBOOK_SRC}
     ln -s ./README.md ./SUMMARY.md
+    cd -
   fi
   /usr/local/bin/mdbook serve -n 0.0.0.0 -p $PORT
 }
