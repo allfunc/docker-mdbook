@@ -5,7 +5,7 @@ FROM nasqueron/rust-musl-builder AS builder
 ARG VERSION
 
 RUN cargo install mdbook --vers ${VERSION} \
-  && cargo install mdbook-toc --vers 0.11.0 \
+  && cargo install mdbook-toc --vers 0.11.1 \
   && cargo install mdbook-mermaid --vers 0.12.6 \
   && cargo install mdbook-plantuml --vers 0.8.0
 
