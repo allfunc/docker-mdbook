@@ -95,7 +95,7 @@ curl https://raw.githubusercontent.com/HillLiu/docker-mdbook/main/bin/preview.sh
 docker pull hillliu/mdbook
 ```
 
-### Troubleshooting
+## Troubleshooting
 
 ```
 docker run --rm hillliu/mdbook -V
@@ -108,5 +108,12 @@ docker run -p 3888:3888 -e PORT=3888 \
     --name mdbook \
     --rm hillliu/mdbook
 ```
+
+## Official Doc
+
+-   SUMMARY.md
+    -   https://rust-lang.github.io/mdBook/format/summary.html
+-   Render
+    -   https://rust-lang.github.io/mdBook/format/configuration/renderers.html
 
 MIT 2023
