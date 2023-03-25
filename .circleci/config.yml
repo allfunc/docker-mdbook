@@ -9,7 +9,7 @@ executors:
 jobs:
   test:
     docker:
-      - image: allops/terratest
+      - image: allfunc/terratest
     steps:
       - checkout
       - setup_remote_docker:
@@ -77,4 +77,4 @@ workflows:
             - test
           matrix:
             parameters:
-              docker-tag: ["0.4.25"]
+              docker-tag: ["0.4.28"]

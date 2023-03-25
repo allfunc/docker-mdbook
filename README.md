@@ -1,5 +1,5 @@
 [![CircleCI](https://circleci.com/gh/HillLiu/docker-mdbook/tree/main.svg?style=svg)](https://circleci.com/gh/HillLiu/docker-mdbook/tree/main)
-[![Docker Pulls](https://img.shields.io/docker/pulls/allops/mdbook.svg)](https://hub.docker.com/r/allops/mdbook)
+[![Docker Pulls](https://img.shields.io/docker/pulls/allfunc/mdbook.svg)](https://hub.docker.com/r/allfunc/mdbook)
 
 # `docker-mdbook` (Alpine)
 
@@ -18,8 +18,8 @@
 
 ## `Docker hub`
 
--   Docker Image: allops/mdbook
--   https://hub.docker.com/r/allops/mdbook
+-   Docker Image: allfunc/mdbook
+-   https://hub.docker.com/r/allfunc/mdbook
 
 ## Usage
 
@@ -88,13 +88,13 @@ curl https://raw.githubusercontent.com/HillLiu/docker-mdbook/main/bin/preview.sh
 ### update docker image
 
 ```
-docker pull allops/mdbook
+docker pull allfunc/mdbook
 ```
 
 ## Troubleshooting
 
 ```
-docker run --rm allops/mdbook -V
+docker run --rm allfunc/mdbook -V
 ```
 
 ```
@@ -102,7 +102,7 @@ docker run -p 3888:3888 -e PORT=3888 \
     -u $(id -u):$(id -g) \
     -v $(pwd):/mdbook/src \
     --name mdbook \
-    --rm allops/mdbook
+    --rm allfunc/mdbook
 ```
 
 ## Official Doc
