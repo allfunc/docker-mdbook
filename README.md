@@ -1,5 +1,5 @@
 [![CircleCI](https://circleci.com/gh/HillLiu/docker-mdbook/tree/main.svg?style=svg)](https://circleci.com/gh/HillLiu/docker-mdbook/tree/main)
-[![Docker Pulls](https://img.shields.io/docker/pulls/hillliu/mdbook.svg)](https://hub.docker.com/r/hillliu/mdbook)
+[![Docker Pulls](https://img.shields.io/docker/pulls/allops/mdbook.svg)](https://hub.docker.com/r/allops/mdbook)
 
 # `docker-mdbook` (Alpine)
 
@@ -7,7 +7,7 @@
 
 | Package         | Version |
 | --------------- | ------- |
-| mdbook          | 0.4.25  |
+| mdbook          | 0.4.28  |
 | mdbook-toc      | 0.11.2  |
 | mdbook-mermaid  | 0.12.6  |
 | mdbook-plantuml | 0.8.0   |
@@ -18,8 +18,8 @@
 
 ## `Docker hub`
 
--   Docker Image: hillliu/mdbook
--   https://hub.docker.com/r/hillliu/mdbook
+-   Docker Image: allops/mdbook
+-   https://hub.docker.com/r/allops/mdbook
 
 ## Usage
 
@@ -85,20 +85,16 @@ curl https://raw.githubusercontent.com/HillLiu/docker-mdbook/main/bin/preview.sh
 -   https://crates.io/crates/mdbook-plantuml
 -   https://plantuml.com/
 
-## Docker hub
-
--   https://hub.docker.com/r/hillliu/mdbook
-
 ### update docker image
 
 ```
-docker pull hillliu/mdbook
+docker pull allops/mdbook
 ```
 
 ## Troubleshooting
 
 ```
-docker run --rm hillliu/mdbook -V
+docker run --rm allops/mdbook -V
 ```
 
 ```
@@ -106,7 +102,7 @@ docker run -p 3888:3888 -e PORT=3888 \
     -u $(id -u):$(id -g) \
     -v $(pwd):/mdbook/src \
     --name mdbook \
-    --rm hillliu/mdbook
+    --rm allops/mdbook
 ```
 
 ## Official Doc

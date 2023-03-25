@@ -39,6 +39,10 @@ case "$OSTYPE" in
     ;;
 esac
 
+open() {
+  echo ${OpenCmd} http://localhost:${PORT} | sh
+}
+
 start() {
   PORT=${PORT:-3888}
   # echo $MDBOOK_SRC
@@ -54,7 +58,7 @@ start() {
   echo $cmd
   echo $cmd | sh
   sleep 5
-  echo ${OpenCmd} http://localhost:${PORT} | sh
+  open
   logs
 }
 
@@ -108,12 +112,15 @@ case "$1" in
   pull)
     pull
     ;;
+  open)
+    open
+    ;;
   *)
     binPath=$0
     if [ "$binPath" == "bash" ] || [ "$binPath" == "sh" ]; then
       binPath="curl https://raw.githubusercontent.com/HillLiu/docker-mdbook/main/bin/preview.sh | bash -s --"
     fi
-    echo "$binPath [start|stop|build|status|logs|pull]"
+    echo "$binPath [start|stop|build|status|logs|pull|open]"
     exit
     ;;
 esac
