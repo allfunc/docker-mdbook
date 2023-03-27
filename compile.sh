@@ -31,7 +31,20 @@ tag() {
   echo "* Finish tag -->"
 }
 
+login() {
+  IS_LOGIN=$(echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_LOGIN" --password-stdin 2>&1)
+  if [ -z "${IS_LOGIN+y}" ]; then
+    echo "Not get login info."
+    exit 1
+  elif ! expr "${IS_LOGIN}" : ".*Succeeded.*" > /dev/null; then
+    echo ${IS_LOGIN}
+    echo "Login not Succeeded."
+    exit 2
+  fi
+}
+
 push() {
+  login
   PUSH_VERSION=${1:-$VERSION}
   LATEST_TAG=${2:-latest}
   if [ -z "$PUSH_VERSION" ]; then
@@ -45,15 +58,6 @@ push() {
     fi
   fi
   echo "* <!-- Start to push ${remoteImage}:$tag"
-  IS_LOGIN=$(echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_LOGIN" --password-stdin 2>&1)
-  if [ -z "${IS_LOGIN+y}" ]; then
-    echo "Not get login info."
-    exit 1
-  elif ! expr "${IS_LOGIN}" : ".*Succeeded.*" > /dev/null; then
-    echo ${IS_LOGIN}
-    echo "Login not Succeeded."
-    exit 2
-  fi
   docker push ${remoteImage}:$tag
   echo "* Finish pushed -->"
   echo ""

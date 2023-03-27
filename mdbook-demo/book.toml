@@ -17,7 +17,7 @@ plantuml-cmd="java -jar /app/plantuml.jar"
 [output.html]
 mathjax-support = true
 additional-css = ["assets/mermaid.css", "assets/print.css", "assets/all-page.css"]
-additional-js = ["assets/mermaid.min.js", "assets/import-html.js"]
+additional-js = ["assets/fzf.umd.js", "assets/elasticlunr.js", "assets/mermaid.min.js", "assets/import-html.js"]
 
 [output.html.search]
 limit-results = 20
