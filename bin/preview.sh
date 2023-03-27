@@ -5,7 +5,7 @@ DIR="$(
   pwd -P
 )"
 ENV="${DIR}/.env"
-IMAGE_NAME="hillliu/mdbook"
+IMAGE_NAME="allfunc/mdbook"
 
 if [ -e "${ENV}" ]; then
   MDBOOK_SRC=$(awk -F "=" '/^MDBOOK_SRC/ {print $2}' $ENV)
