@@ -1,29 +1,27 @@
-const elasticlunr = window.elasticlunr;
-
-elasticlunr.Index.load = (index) => {
+/**
+ * @see https://github.com/HillLiu/docker-mdbook
+ */
+window.elasticlunr.Index.load = (index) => {
   const FzF = window.fzf.Fzf;
-  const store = index.documentStore;
-  const arr = [];
-  for (i=0,j=store.length; i <j; i++) {
-    arr.push(i);
-  }
-  const ofzf = new FzF(arr, {
-    selector:(item)=>{
-      const res = index.documentStore.docs[item];
+  const storeDocs = index.documentStore.docs;
+  const indexArr = Object.keys(storeDocs);
+  const ofzf = new FzF(indexArr, {
+    selector: (item) => {
+      const res = storeDocs[item];
       res.text = `${res.title}${res.breadcrumbs}${res.body}`;
       return res.text;
-    }
-  })
+    },
+  });
   return {
     search: (searchterm) => {
       const entries = ofzf.find(searchterm);
-      return entries.map(data=>{
-        const {item,score} = data;
+      return entries.map((data) => {
+        const { item, score } = data;
         return {
-          doc: index.documentStore.docs[item],
+          doc: storeDocs[item],
           ref: item,
-          score
-        }
+          score,
+        };
       });
     },
   };
