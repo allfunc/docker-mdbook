@@ -4,9 +4,7 @@
 @media print {
   h1 {
     string-set: doctitle content();
-    page-break-before: always;
-    counter-reset: figurenum;
-    counter-reset: footnote;
+    counter-reset: footnote figurenum;
     line-height: 1.3;
   }
   .page-break {
