@@ -1,5 +1,4 @@
 #!/usr/bin/env sh
-
 DIR="$(
   cd "$(dirname "$0")"
   pwd -P
@@ -50,12 +49,14 @@ start() {
   if [ -e "${DIR}/book.toml" ]; then
     cmd+=" -v ${DIR}/book.toml:/mdbook/book.toml"
   fi
-  cmd+=" -v ${MDBOOK_SRC}:/mdbook/src --name ${CONTAINER_NAME} --rm -d ${IMAGE_NAME} server"
-  echo $cmd
-  echo $cmd | sh
+  cmd+=" -v ${MDBOOK_SRC}:/mdbook/src --name ${CONTAINER_NAME} --rm"
+  cmd1="${cmd} -d ${IMAGE_NAME} server"
+  cmd2="${cmd} ${IMAGE_NAME} server"
+  echo $cmd2
+  echo $cmd1 | sh
   sleep 5
   open
-  logs
+  logs || echo $cmd2 | sh
 }
 
 build() {
