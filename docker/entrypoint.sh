@@ -13,6 +13,9 @@ EOF
       cd ${MDBOOK_SRC}
       ln -s ./README.md ./SUMMARY.md
       cd -
+    else
+      echo "SUMMARY.md not exits and can not auto generate." >&2
+      exit 10
     fi
   fi
   /usr/local/bin/mdbook serve -n 0.0.0.0 -p $PORT
