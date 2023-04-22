@@ -110,6 +110,9 @@ case "$1" in
   restore)
     restore
     ;;
+  login)
+    login
+    ;;
   p)
     push $2 $3
     ;;

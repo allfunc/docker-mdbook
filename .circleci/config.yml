@@ -1,5 +1,21 @@
 version: 2.1
 
+commands:
+  install-docker-buildx:
+    description: Install Docker Buildx
+    steps:
+      - run:
+          name: Install Docker Buildx
+          command: |
+            mkdir -vp ~/.docker/cli-plugins/
+            curl --silent -L "https://github.com/docker/buildx/releases/download/v0.10.4/buildx-v0.10.4.linux-amd64" > ~/.docker/cli-plugins/docker-buildx
+            chmod a+x ~/.docker/cli-plugins/docker-buildx
+            docker buildx version
+            sudo apt-get update && sudo apt-get install -y binfmt-support qemu-user-static
+            docker run --rm --privileged tonistiigi/binfmt --install arm64
+            docker context create buildcontext
+            docker buildx create buildcontext --use
+
 executors:
   docker-publisher:
     docker:
@@ -13,7 +29,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:
-          version: 20.10.7
+          version: 20.10.18
           docker_layer_caching: true
       - run:
           name: "Test with terratest"
@@ -30,7 +46,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:
-          version: 20.10.7
+          version: 20.10.18
           docker_layer_caching: true
       - run:
           name: Log time
@@ -52,21 +68,37 @@ jobs:
               cat ${BUILD_FOLDER}/$file
               echo ""
             done
+      - install-docker-buildx
+      - run:
+          name: login
+          command: ./compile.sh login
       - run:
           name: build Docker image
           command: |
             VER_PREFIX=$(support/VER_PREFIX.sh)
+            VERSION=$(support/VERSION.sh)
+            ALT_VERSION=$(support/ALT_VERSION.sh)
             IMAGE_NAME=$(DOCKER_HUB=1 support/remoteImage.sh)
             BUILD_VERSION=<< parameters.docker-tag >>
             BUILD_FOLDER=${VER_PREFIX}-<< parameters.docker-tag >>
             BUILD_ARG=""
-            docker build ${BUILD_ARG} -f ${BUILD_FOLDER}/Dockerfile \
-              -t $IMAGE_NAME:${BUILD_VERSION} \
+            LATEST_TAG=""
+            if [ "x$VERSION" == "x$BUILD_VERSION" ]; then
+                if [ -n "${ALT_VERSION}" ]; then
+                  BUILD_ARG="--build-arg ALT_VERSION=${ALT_VERSION}"
+                fi
+                LATEST_TAG="-t $IMAGE_NAME:latest"
+            fi
+            echo "Build ARGS: ${BUILD_ARG}"
+            docker buildx inspect --bootstrap
+            docker buildx build ${BUILD_ARG} -f ${BUILD_FOLDER}/Dockerfile \
+              --push \
+              --platform linux/amd64,linux/arm64/v8 \
+              -t $IMAGE_NAME:${BUILD_VERSION} ${LATEST_TAG} \
               ./${BUILD_FOLDER}
       - run:
-          name: Publish Docker Image to Docker Hub
-          command: |
-            DOCKER_HUB=1 ./compile.sh p << parameters.docker-tag >>
+          name: logout 
+          command: docker logout
 
 workflows:
   run-job:
