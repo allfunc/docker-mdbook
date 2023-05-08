@@ -31,6 +31,7 @@ WORKDIR /mdbook
 COPY ./mdbook-demo /mdbook
 ENV PORT=${PORT:-80}
 
+COPY ./docker/monitor-folder /usr/local/bin/
 COPY ./docker/entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["server"]
