@@ -108,7 +108,7 @@ echo
 
 while true; do
   isRunning=$(docker container ls --filter name=mdbook --format '{{.Names}}' | head -n 1)
-  if [ -z "\${isRunning}" ];
+  if [ -z "\${isRunning}" ]; then
     break;
   fi
   find \${WATCH_FOLDER} -newer ${watchfile} -type f \( ! -path "*.sw*" \) -print -a -exec \$TOUCH {} \;
