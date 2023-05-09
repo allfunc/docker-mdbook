@@ -100,18 +100,18 @@ watch() {
   cat > ${watchfile} << EOF
 #!/usr/bin/env sh
 WATCH_FOLDER=${MDBOOK_SRC}
-TOUCH='docker exec mdbook do-touch "'\$WATCH_FOLDER'" '
+TOUCH='docker exec mdbook do-touch'
 
 echo
 echo 'Start to monitor: '\${WATCH_FOLDER}
 echo
 
 while true; do
-  isRunning=$(docker container ls --filter name=mdbook --format '{{.Names}}' | head -n 1)
+  isRunning=\$(docker container ls --filter name=mdbook --format '{{.Names}}' | head -n 1)
   if [ -z "\${isRunning}" ]; then
     break;
   fi
-  find \${WATCH_FOLDER} -newer ${watchfile} -type f \( ! -path "*.sw*" \) -print -a -exec \$TOUCH {} \;
+  find \${WATCH_FOLDER} -newer ${watchfile} -type f \( ! -path "*.sw*" \) -print -a -exec sh -c 'new_path="\${1#\$2/}"; \$3 \$new_path' _ {} "\$WATCH_FOLDER" "\$TOUCH" \;
   touch ${watchfile}
   sleep 1
 done
