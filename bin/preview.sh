@@ -45,6 +45,7 @@ start() {
   # echo $PORT
   # exit;
   stop
+  watchMode=$1
   cmd="docker run -p ${PORT}:${PORT} -e PORT=${PORT} -u $(id -u):$(id -g)"
   if [ -e "${DIR}/book.toml" ]; then
     cmd+=" -v ${DIR}/book.toml:/mdbook/book.toml"
@@ -55,6 +56,9 @@ start() {
   echo $cmd2
   echo $cmd1 | sh
   sleep 5
+  if [ -n "$watchMode" ]; then
+    watch
+  fi
   open
   logs || echo $cmd2 | sh
 }
@@ -95,7 +99,7 @@ watch() {
   watchfile=/tmp/mdbook-${pid}
   cat > ${watchfile} << EOF
 #!/usr/bin/env sh
-WATCH_FOLDER=$1
+WATCH_FOLDER=${MDBOOK_SRC}
 TOUCH="docker exec mdbook do-touch"
 
 echo
@@ -112,6 +116,8 @@ while true; do
   sleep 1
 done
 EOF
+  chmod 0755 ${watchfile}
+  sh -c ${watchfile} &
 }
 
 case "$1" in
@@ -119,7 +125,7 @@ case "$1" in
     start
     ;;
   watch)
-    watch
+    start watch
     ;;
   stop)
     stop
