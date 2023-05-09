@@ -1,4 +1,6 @@
 #!/usr/bin/env sh
-file=$1
-mode=$(stat -c '%a' $file)
-chmod $mode $file
+folder=$1
+file=$2
+newfile='/mdbook/src'${file#$folder}
+mode=$(stat -c '%a' $newfile)
+chmod $mode $newfile
