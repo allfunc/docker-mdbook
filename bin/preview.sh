@@ -90,9 +90,36 @@ pull() {
   docker pull ${IMAGE_NAME}
 }
 
+watch() {
+  pid=$$
+  watchfile=/tmp/mdbook-${pid}
+  cat > ${watchfile} << EOF
+#!/usr/bin/env sh
+WATCH_FOLDER=$1
+TOUCH="docker exec mdbook do-touch"
+
+echo
+echo 'Start to monitor: '${WATCH_FOLDER}
+echo
+
+while true; do
+  isRunning=$(docker container ls --filter name=mdbook --format '{{.Names}}' | head -n 1)
+  if [ -z "${isRunning}" ];
+    break;
+  fi
+  find ${WATCH_FOLDER} -newer ${watchfile} -type f -print -a -exec  {} \;
+  touch ${watchfile}
+  sleep 1
+done
+EOF
+}
+
 case "$1" in
   start)
     start
+    ;;
+  watch)
+    watch
     ;;
   stop)
     stop
@@ -117,7 +144,7 @@ case "$1" in
     if [ "$binPath" == "bash" ] || [ "$binPath" == "sh" ]; then
       binPath="curl https://raw.githubusercontent.com/HillLiu/docker-mdbook/main/bin/preview.sh | bash -s --"
     fi
-    echo "$binPath [start|stop|build|status|logs|pull|open]"
+    echo "$binPath [start|watch|stop|build|status|logs|pull|open]"
     exit
     ;;
 esac

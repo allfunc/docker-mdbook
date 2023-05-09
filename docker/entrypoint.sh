@@ -18,7 +18,6 @@ EOF
       exit 10
     fi
   fi
-  monitor-folder $MDBOOK_SRC &
   /usr/local/bin/mdbook serve -n 0.0.0.0 -p $PORT
 }
 

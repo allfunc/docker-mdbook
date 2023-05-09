@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+file=$1
+mode=$(stat -c '%a' $file)
+chmod $mode $file
