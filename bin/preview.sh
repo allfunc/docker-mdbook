@@ -103,15 +103,15 @@ WATCH_FOLDER=${MDBOOK_SRC}
 TOUCH="docker exec mdbook do-touch"
 
 echo
-echo 'Start to monitor: '${WATCH_FOLDER}
+echo 'Start to monitor: '\${WATCH_FOLDER}
 echo
 
 while true; do
   isRunning=$(docker container ls --filter name=mdbook --format '{{.Names}}' | head -n 1)
-  if [ -z "${isRunning}" ];
+  if [ -z "\${isRunning}" ];
     break;
   fi
-  find ${WATCH_FOLDER} -newer ${watchfile} -type f -print -a -exec  {} \;
+  find \${WATCH_FOLDER} -newer ${watchfile} -type f -print -a -exec \$TOUCH {} \;
   touch ${watchfile}
   sleep 1
 done
