@@ -77,9 +77,9 @@ stop() {
   local res=$(status | tail -1 | awk '{print $(NF)}')
   if [ "x$res" == "x$CONTAINER_NAME" ]; then
     docker stop ${CONTAINER_NAME}
+    sleep 1
   fi
-  #  docker stop ${CONTAINER_NAME}
-  #  docker rm ${CONTAINER_NAME}
+  pgrep -lf "/tmp/mdbook" | awk '{print $1}' | xargs -I{} kill -9 {}
 }
 
 status() {
@@ -97,6 +97,7 @@ pull() {
 watch() {
   pid=$$
   watchfile=/tmp/mdbook-${pid}
+  logfile=/tmp/mdbook-${pid}.log
   cat > ${watchfile} << EOF
 #!/usr/bin/env sh
 WATCH_FOLDER=${MDBOOK_SRC}
@@ -117,7 +118,7 @@ while true; do
 done
 EOF
   chmod 0755 ${watchfile}
-  sh -c ${watchfile} &
+  sh -c ${watchfile} > ${logfile} 2>&1 &
 }
 
 case "$1" in
