@@ -110,6 +110,9 @@ echo
 while true; do
   isRunning=\$(docker container ls --filter name=mdbook --format '{{.Names}}' | head -n 1)
   if [ -z "\${isRunning}" ]; then
+    echo
+    echo 'Stop monitor: '\${WATCH_FOLDER}
+    echo
     break;
   fi
   find \${WATCH_FOLDER} -newer ${watchfile} -type f \( ! -path "*.sw*" \) -print -a -exec sh -c 'new_path="\${1#\$2/}"; \$3 \$new_path' _ {} "\$WATCH_FOLDER" "\$TOUCH" \;
