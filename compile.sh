@@ -43,6 +43,37 @@ login() {
   fi
 }
 
+getJSONField() {
+  text=$1
+  field=$2
+  echo $text | sed -n 's|.*"'${field}'"\s*:\s*"\([^"]*\)".*|\1|p'
+}
+
+getToken() {
+  RESULT=$(
+    curl -kX POST \
+      -H "Content-Type: application/json" \
+      -d '{"username": "'$DOCKER_LOGIN'", "password": "'$DOCKER_PASSWORD'"}' \
+      https://hub.docker.com/v2/users/login
+  )
+  echo $(getJSONField $RESULT token)
+}
+
+updateDockerHubDesc() {
+  token=$(getToken)
+  if [ -e "README.md" ]; then
+    full_description=$(jq -s -R . README.md)
+  fi
+  data="{\"full_description\": ${full_description:-""} }"
+  RESULT=$(
+    curl -kX PATCH https://hub.docker.com/v2/repositories/${remoteImage} \
+      -H "Content-Type: application/json" \
+      -H "Authorization: JWT $token" \
+      -d "$data"
+  )
+  echo $RESULT
+}
+
 push() {
   login
   PUSH_VERSION=${1:-$VERSION}
@@ -89,7 +120,7 @@ build() {
   if [ 'x' != "x$NO_CACHE" ]; then
     echo nocache: ${NO_CACHE}
   fi
-  docker build ${BUILD_ARG} ${NO_CACHE} -f ${DIR}/${DOCKER_FILE} -t $localImage ${DIR}
+  docker build --progress=plain ${BUILD_ARG} ${NO_CACHE} -f ${DIR}/${DOCKER_FILE} -t $localImage ${DIR}
   list
 }
 
@@ -112,6 +143,9 @@ case "$1" in
     ;;
   login)
     login
+    ;;
+  updateDockerHubDesc)
+    updateDockerHubDesc
     ;;
   p)
     push $2 $3
