@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/HillLiu/docker-mdbook/tree/main.svg?style=svg)](https://circleci.com/gh/HillLiu/docker-mdbook/tree/main)
+[![CircleCI](https://circleci.com/gh/allfunc/docker-mdbook/tree/main.svg?style=svg)](https://circleci.com/gh/allfunc/docker-mdbook/tree/main)
 [![Docker Pulls](https://img.shields.io/docker/pulls/allfunc/mdbook.svg)](https://hub.docker.com/r/allfunc/mdbook)
 
 # `docker-mdbook` (Alpine)
@@ -14,7 +14,7 @@
 
 ## `GIT`
 
--   https://github.com/HillLiu/docker-mdbook
+-   https://github.com/allfunc/docker-mdbook
 
 ## `Docker hub`
 
@@ -32,7 +32,7 @@
 ```
 
 2. Copy bin/preview.sh to same folder.
-    - or download https://raw.githubusercontent.com/HillLiu/docker-mdbook/main/bin/preview.sh
+    - or download https://raw.githubusercontent.com/allfunc/docker-mdbook/main/bin/preview.sh
     - chmod +x preview.sh
 3. Run following command
 
@@ -43,7 +43,7 @@
 ### Curl Example
 
 ```
-curl https://raw.githubusercontent.com/HillLiu/docker-mdbook/main/bin/preview.sh | bash -s -- start
+curl https://raw.githubusercontent.com/allfunc/docker-mdbook/main/bin/preview.sh | bash -s -- start
 ```
 
 ### import HTML
@@ -55,11 +55,11 @@ curl https://raw.githubusercontent.com/HillLiu/docker-mdbook/main/bin/preview.sh
 ```
 
 -   sample md file
-    -   https://raw.githubusercontent.com/HillLiu/docker-mdbook/main/mdbook-demo/src/importDemo_2.md
+    -   https://raw.githubusercontent.com/allfunc/docker-mdbook/main/mdbook-demo/src/importDemo_2.md
 -   sample public folder (could be any)
-    -   https://github.com/HillLiu/docker-mdbook/tree/main/mdbook-demo/src/public
+    -   https://github.com/allfunc/docker-mdbook/tree/main/mdbook-demo/src/public
 -   sample import HTML file
-    -   https://github.com/HillLiu/docker-mdbook/blob/main/mdbook-demo/src/public/import-demo.html
+    -   https://github.com/allfunc/docker-mdbook/blob/main/mdbook-demo/src/public/import-demo.html
 
 ## APP
 
