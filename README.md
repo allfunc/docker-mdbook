@@ -7,7 +7,7 @@
 
 | Package         | Version |
 | --------------- | ------- |
-| mdbook          | 0.4.30  |
+| mdbook          | 0.4.31  |
 | mdbook-toc      | 0.11.2  |
 | mdbook-mermaid  | 0.12.6  |
 | mdbook-plantuml | 0.8.0   |
