@@ -27,6 +27,7 @@ apk add --virtual .build-deps $BUILD_DEPS && apk add $INSTALL
 mv /entrypoint /entrypoint-plantuml
 mkdir -p /mdbook/src
 chmod 0777 -R /mdbook
+chmod 0777 -R /var/cache/fontconfig
 
 apk del -f .build-deps && rm -rf /var/cache/apk/* || exit 1
 

@@ -29,7 +29,8 @@ RUN apk update && apk add bash bc \
 # init workdir 
 WORKDIR /mdbook
 COPY ./mdbook-demo /mdbook
-ENV PORT=${PORT:-80}
+ENV PORT=${PORT:-80} \
+  HOME=/mdbook
 
 COPY ./docker/do-touch /usr/local/bin/
 COPY ./docker/entrypoint.sh /entrypoint.sh
