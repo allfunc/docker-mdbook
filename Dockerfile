@@ -7,7 +7,9 @@ ARG VERSION
 RUN cargo install mdbook --vers ${VERSION} \
   && cargo install mdbook-toc --vers 0.11.2 \
   && cargo install mdbook-mermaid --vers 0.12.6 \
-  && cargo install mdbook-plantuml --vers 0.8.0
+  && cargo install mdbook-plantuml --vers 0.8.0 \
+  && cargo install anstream --vers 0.4.0 \
+  && cargo install clap_lex --vers 0.5.1 
 
 ENV CARGO_PKG_VERSION=${VERSION}
 
