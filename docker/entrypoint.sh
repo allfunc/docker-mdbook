@@ -14,7 +14,10 @@ EOF
       ln -s ./README.md ./SUMMARY.md
       cd -
     else
-      echo "SUMMARY.md not exits and can not auto generate." >&2
+      echo -n "
+        SUMMARY.md does not exist and cannot be auto-generated.
+        You could manually link to README.md yourself, like this: `ln -s ./README.md ./SUMMARY.md`.
+      " >&2
       exit 10
     fi
   fi
