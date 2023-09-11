@@ -74,6 +74,14 @@ updateDockerHubDesc() {
   echo $RESULT
 }
 
+getRateLimit() {
+  # https://docs.docker.com/docker-hub/download-rate-limit/
+  token=$(curl -s --user "${DOCKER_LOGIN}:${DOCKER_PASSWORD}" "https://auth.docker.io/token?service=registry.docker.io&scope=repository:ratelimitpreview/test:pull" | jq -r .token)
+  curl -s -I \
+    -H "Authorization: Bearer $token" \
+    "https://registry-1.docker.io/v2/ratelimitpreview/test/manifests/latest" | grep "ratelimit-"
+}
+
 push() {
   login
   PUSH_VERSION=${1:-$VERSION}
@@ -146,6 +154,9 @@ case "$1" in
     ;;
   updateDockerHubDesc)
     updateDockerHubDesc
+    ;;
+  rate)
+    getRateLimit
     ;;
   p)
     push $2 $3

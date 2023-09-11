@@ -3,18 +3,24 @@ version: 2.1
 commands:
   install-docker-buildx:
     description: Install Docker Buildx
+    parameters:
+      docker-tag:
+        type: string
+      buildx-version:
+        type: string
+        default: v0.11.2
     steps:
       - run:
           name: Install Docker Buildx
           command: |
             mkdir -vp ~/.docker/cli-plugins/
-            curl --silent -L "https://github.com/docker/buildx/releases/download/v0.10.4/buildx-v0.10.4.linux-amd64" > ~/.docker/cli-plugins/docker-buildx
+            curl --silent -L "https://github.com/docker/buildx/releases/download/<< parameters.buildx-version >>/buildx-<< parameters.buildx-version >>.linux-amd64" > ~/.docker/cli-plugins/docker-buildx
             chmod a+x ~/.docker/cli-plugins/docker-buildx
             docker buildx version
             sudo apt-get update && sudo apt-get install -y binfmt-support qemu-user-static
             docker run --rm --privileged tonistiigi/binfmt --install arm64
             docker context create buildcontext
-            docker buildx create buildcontext --use
+            docker buildx create --name joyful-<< parameters.docker-tag >>- --append buildcontext --use
 
 executors:
   docker-publisher:
@@ -29,7 +35,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:
-          version: 20.10.18
+          version: 20.10.24
           docker_layer_caching: true
       - run:
           name: "Test with terratest"
@@ -52,6 +58,9 @@ jobs:
           name: Log time
           command: date
       - run:
+          name: Get Rate Limit
+          command: ./compile.sh rate
+      - run:
           name: Gen Docker file
           command: |
             VER_PREFIX=$(support/VER_PREFIX.sh)
@@ -68,10 +77,8 @@ jobs:
               cat ${BUILD_FOLDER}/$file
               echo ""
             done
-      - install-docker-buildx
-      - run:
-          name: login
-          command: ./compile.sh login
+      - install-docker-buildx:
+          docker-tag: << parameters.docker-tag >>
       - run:
           name: build Docker image
           command: |
@@ -81,7 +88,7 @@ jobs:
             IMAGE_NAME=$(DOCKER_HUB=1 support/remoteImage.sh)
             BUILD_VERSION=<< parameters.docker-tag >>
             BUILD_FOLDER=${VER_PREFIX}-<< parameters.docker-tag >>
-            BUILD_ARG=""
+            BUILD_ARG="--build-arg BUILDKIT_INLINE_CACHE=1"
             LATEST_TAG=""
             if [ "x$VERSION" == "x$BUILD_VERSION" ]; then
                 if [ -n "${ALT_VERSION}" ]; then
@@ -89,16 +96,21 @@ jobs:
                 fi
                 LATEST_TAG="-t $IMAGE_NAME:latest"
             fi
-            echo "Build ARGS: ${BUILD_ARG}"
+            docker pull $IMAGE_NAME:${BUILD_VERSION}
             docker buildx inspect --bootstrap
-            docker buildx build ${BUILD_ARG} -f ${BUILD_FOLDER}/Dockerfile \
+            echo "Build ARGS: ${BUILD_ARG}" 
+            echo "# ------ Start to Login ------ #"
+            ./compile.sh login
+            DOCKER_BUILDKIT=1 docker buildx build ${BUILD_ARG} -f ${BUILD_FOLDER}/Dockerfile \
+              --cache-to=type=inline,mode=all \
+              --cache-from $IMAGE_NAME:${BUILD_VERSION} \
               --push \
               --platform linux/amd64,linux/arm64/v8 \
               -t $IMAGE_NAME:${BUILD_VERSION} ${LATEST_TAG} \
               ./${BUILD_FOLDER}
             ./compile.sh updateDockerHubDesc
       - run:
-          name: logout 
+          name: logout
           command: docker logout
 
 workflows:
