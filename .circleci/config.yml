@@ -52,14 +52,11 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:
-          version: 20.10.18
+          version: 20.10.24
           docker_layer_caching: true
       - run:
           name: Log time
           command: date
-      - run:
-          name: Get Rate Limit
-          command: ./compile.sh rate
       - run:
           name: Gen Docker file
           command: |
@@ -96,15 +93,18 @@ jobs:
                 fi
                 LATEST_TAG="-t $IMAGE_NAME:latest"
             fi
-            docker pull $IMAGE_NAME:${BUILD_VERSION}
+            echo "Build ARGS: ${BUILD_ARG}"
+            docker pull $IMAGE_NAME:${BUILD_VERSION} || true
             docker buildx inspect --bootstrap
-            echo "Build ARGS: ${BUILD_ARG}" 
             echo "# ------ Start to Login ------ #"
             ./compile.sh login
+            ./compile.sh rate
+            echo "# ------ End to Login ------ #"
             DOCKER_BUILDKIT=1 docker buildx build ${BUILD_ARG} -f ${BUILD_FOLDER}/Dockerfile \
               --cache-to=type=inline,mode=all \
               --cache-from $IMAGE_NAME:${BUILD_VERSION} \
               --push \
+              --progress=plain \
               --platform linux/amd64,linux/arm64/v8 \
               -t $IMAGE_NAME:${BUILD_VERSION} ${LATEST_TAG} \
               ./${BUILD_FOLDER}
@@ -122,4 +122,4 @@ workflows:
             - test
           matrix:
             parameters:
-              docker-tag: ["0.4.31"]
+              docker-tag: ["0.4.35"]

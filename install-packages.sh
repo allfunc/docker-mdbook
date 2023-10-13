@@ -29,6 +29,9 @@ mkdir -p /mdbook/src
 chmod 0777 -R /mdbook
 chmod 0777 -R /var/cache/fontconfig
 
+echo $(date +%Y%m%d%S)'-'$TARGETPLATFORM > /build_version
+
+# Clean
 apk del -f .build-deps && rm -rf /var/cache/apk/* || exit 1
 
 exit 0

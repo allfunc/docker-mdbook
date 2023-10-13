@@ -1,26 +1,21 @@
 ARG VERSION=${VERSION:-[VERSION]}
 
-FROM rust:alpine3.18 AS builder
+FROM allfunc/rust-musl-crate AS builder
 
 ARG VERSION
 
-RUN apk update && apk add --no-cache musl-dev pkgconfig openssl1.1-compat
-
-RUN rustup install 1.70.0 \
-  && cargo install mdbook --vers ${VERSION} \
+RUN cargo install mdbook --vers ${VERSION} \
+  && cargo install mdbook-plantuml --vers 0.8.0 \
   && cargo install mdbook-toc --vers 0.11.2 \
-  && cargo install mdbook-mermaid --vers 0.12.6 \
-  && cargo install mdbook-plantuml --vers 0.8.0
-
-ENV CARGO_PKG_VERSION=${VERSION}
+  && cargo install mdbook-mermaid --vers 0.12.6
 
 FROM miy4/plantuml
 
 COPY --from=builder \
   /home/rust/.cargo/bin/mdbook \
+  /home/rust/.cargo/bin/mdbook-plantuml \
   /home/rust/.cargo/bin/mdbook-toc \
   /home/rust/.cargo/bin/mdbook-mermaid \
-  /home/rust/.cargo/bin/mdbook-plantuml \
   /usr/local/bin/
 
 # apk
