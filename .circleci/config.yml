@@ -49,6 +49,7 @@ jobs:
       docker-tag:
         type: string
     executor: docker-publisher
+    resource_class: large
     steps:
       - checkout
       - setup_remote_docker:
@@ -57,6 +58,9 @@ jobs:
       - run:
           name: Log time
           command: date
+      - run:
+          name: Log info
+          command: export
       - run:
           name: Gen Docker file
           command: |
