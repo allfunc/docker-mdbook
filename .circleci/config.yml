@@ -85,7 +85,7 @@ jobs:
             IMAGE_NAME=$(DOCKER_HUB=1 support/remoteImage.sh)
             BUILD_VERSION=<< parameters.docker-tag >>
             BUILD_FOLDER=${VER_PREFIX}-<< parameters.docker-tag >>
-            BUILD_ARG="--build-arg BUILDKIT_INLINE_CACHE=1"
+            BUILD_ARG=""
             LATEST_TAG=""
             if [ "x$VERSION" == "x$BUILD_VERSION" ]; then
                 if [ -n "${ALT_VERSION}" ]; then
@@ -100,7 +100,7 @@ jobs:
             ./compile.sh login
             ./compile.sh rate
             echo "# ------ End to Login ------ #"
-            DOCKER_BUILDKIT=1 docker buildx build ${BUILD_ARG} -f ${BUILD_FOLDER}/Dockerfile \
+            docker buildx build ${BUILD_ARG} -f ${BUILD_FOLDER}/Dockerfile \
               --cache-to=type=inline,mode=all \
               --cache-from $IMAGE_NAME:${BUILD_VERSION} \
               --push \
