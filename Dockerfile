@@ -4,10 +4,10 @@ FROM allfunc/rust-musl-crate AS builder
 
 ARG VERSION
 
-RUN cargo install mdbook --vers ${VERSION} \
-  && cargo install mdbook-plantuml --vers 0.8.0 \
-  && cargo install mdbook-toc --vers 0.14.1 \
-  && cargo install mdbook-mermaid --vers 0.12.6
+RUN cargo install mdbook@${VERSION}
+RUN cargo install mdbook-plantuml@0.8.0
+RUN cargo install mdbook-toc@0.14.1
+RUN cargo install mdbook-mermaid@0.12.6
 
 FROM miy4/plantuml
 

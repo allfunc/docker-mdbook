@@ -50,6 +50,7 @@ jobs:
         type: string
     executor: docker-publisher
     resource_class: large
+    parallelism: 4
     steps:
       - checkout
       - setup_remote_docker:
