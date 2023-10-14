@@ -17,7 +17,7 @@ commands:
             curl --silent -L "https://github.com/docker/buildx/releases/download/<< parameters.buildx-version >>/buildx-<< parameters.buildx-version >>.linux-amd64" > ~/.docker/cli-plugins/docker-buildx
             chmod a+x ~/.docker/cli-plugins/docker-buildx
             docker buildx version
-            sudo apt-get update && sudo apt-get install -y binfmt-support qemu-user-static
+            sudo apt-get update && sudo apt-get install -qq -y --no-install-recommends binfmt-support qemu-user-static
             docker run --rm --privileged tonistiigi/binfmt --install arm64
             docker context create buildcontext
             docker buildx create --name joyful-<< parameters.docker-tag >>- --append buildcontext --use
@@ -32,6 +32,8 @@ jobs:
   test:
     docker:
       - image: allfunc/terratest
+    executor: docker-publisher
+    resource_class: large
     steps:
       - checkout
       - setup_remote_docker:
@@ -110,7 +112,7 @@ jobs:
               --cache-from $IMAGE_NAME:${BUILD_VERSION} \
               --push \
               --progress=plain \
-              --platform linux/amd64,linux/arm64/v8 \
+              --platform linux/arm64/v8 \
               -t $IMAGE_NAME:${BUILD_VERSION} ${LATEST_TAG} \
               ./${BUILD_FOLDER}
             ./compile.sh updateDockerHubDesc

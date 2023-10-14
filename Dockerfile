@@ -3,11 +3,13 @@ ARG VERSION=${VERSION:-[VERSION]}
 FROM allfunc/rust-musl-crate AS builder
 
 ARG VERSION
+RUN cargo install cargo-local-install --no-default-features
+RUN cargo local-install --locked mdbook@${VERSION} --root .local
+RUN cargo local-install --unlocked mdbook-plantuml@0.8.0 --root .local
+RUN cargo local-install --unlocked mdbook-toc@0.14.1 --root .local
+RUN cargo local-install --unlocked mdbook-mermaid@0.12.6 --root .local
 
-RUN cargo install mdbook@${VERSION}
-RUN cargo install mdbook-plantuml@0.8.0
-RUN cargo install mdbook-toc@0.14.1
-RUN cargo install mdbook-mermaid@0.12.6
+RUN cp -L /home/rust/src/.local/bin/* /home/rust/.cargo/bin
 
 FROM miy4/plantuml
 
