@@ -20,11 +20,10 @@ containerName=${localImage//\//-}-${pid}
 echo $containerName
 
 cli='env docker run --rm -it'
-cli+=" -u $(id -u):$(id -g)"
 cli+=" -v $DIR/../docker/entrypoint.sh:/entrypoint.sh"
 cli+=" -v $MY_PWD:$MY_PWD"
 cli+=" -w $MY_PWD"
-cli+=" --entrypoint sh"
+cli+=" --entrypoint bash"
 cli+=" --name ${containerName} ${localImage}"
 cli+=" ${C}"
 

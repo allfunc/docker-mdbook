@@ -2,22 +2,20 @@ ARG VERSION=${VERSION:-[VERSION]}
 
 FROM allfunc/rust-musl-crate AS builder
 
-ARG VERSION
-RUN cargo install cargo-local-install --no-default-features
-RUN cargo local-install --locked mdbook@${VERSION} --root .local
-RUN cargo local-install --unlocked mdbook-plantuml@0.8.0 --root .local
-RUN cargo local-install --unlocked mdbook-toc@0.14.1 --root .local
-RUN cargo local-install --unlocked mdbook-mermaid@0.12.6 --root .local
+ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_RUSTFLAGS="-C link-arg=/opt/musl/aarch64-linux-musl/lib/libc.a -C linker=rust-lld -C debuginfo=1"
 
-RUN cp -L /home/rust/src/.local/bin/* /home/rust/.cargo/bin
+ARG VERSION
+
+COPY ./docker/mybook /home/rust/src/
+RUN cargo bin --install
 
 FROM miy4/plantuml
 
 COPY --from=builder \
-  /home/rust/.cargo/bin/mdbook \
-  /home/rust/.cargo/bin/mdbook-plantuml \
-  /home/rust/.cargo/bin/mdbook-toc \
-  /home/rust/.cargo/bin/mdbook-mermaid \
+  /home/rust/src/.bin/rust-1.73.0/mdbook/0.4.35/bin/mdbook \
+  /home/rust/src/.bin/rust-1.73.0/mdbook-plantuml/0.8.0/bin/mdbook-plantuml \
+  /home/rust/src/.bin/rust-1.73.0/mdbook-toc/0.14.1/bin/mdbook-toc \
+  /home/rust/src/.bin/rust-1.73.0/mdbook-mermaid/0.12.6/bin/mdbook-mermaid \
   /usr/local/bin/
 
 # apk
