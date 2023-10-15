@@ -11,15 +11,16 @@ commands:
         default: v0.11.2
     steps:
       - run:
+          name: Install package
+          command: sudo apt-get update && sudo apt-get install -qq -y --no-install-recommends binfmt-support qemu-user-static
+          # command: docker run --rm --privileged aptman/qus -s -- -p aarch64
+      - run:
           name: Install Docker Buildx
           command: |
             mkdir -vp ~/.docker/cli-plugins/
-            curl --silent -L "https://github.com/docker/buildx/releases/download/<< parameters.buildx-version >>/buildx-<< parameters.buildx-version >>.linux-amd64" > ~/.docker/cli-plugins/docker-buildx
+            curl --silent -L "https://github.com/docker/buildx/releases/download/<< parameters.buildx-version >>/buildx-<< parameters.buildx-version >>.linux-arm64" > ~/.docker/cli-plugins/docker-buildx
             chmod a+x ~/.docker/cli-plugins/docker-buildx
-            docker buildx version
-            docker run --rm --privileged aptman/qus -s -- -p aarch64
-            docker context create buildcontext
-            docker buildx create --name joyful-<< parameters.docker-tag >>- --append buildcontext --use
+            docker buildx create --name joyful-<< parameters.docker-tag >>- --use
 
 executors:
   docker-publisher:
@@ -33,10 +34,10 @@ jobs:
       - image: allfunc/terratest
     executor: docker-publisher
     resource_class: large
+    parallelism: 4
     steps:
       - checkout
       - setup_remote_docker:
-          version: 20.10.24
           docker_layer_caching: true
       - run:
           name: "Test with terratest"
@@ -50,12 +51,11 @@ jobs:
       docker-tag:
         type: string
     executor: docker-publisher
-    resource_class: large
+    resource_class: arm.large
     parallelism: 4
     steps:
       - checkout
       - setup_remote_docker:
-          version: 20.10.24
           docker_layer_caching: true
       - run:
           name: Log time

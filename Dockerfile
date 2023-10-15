@@ -2,9 +2,9 @@ ARG VERSION=${VERSION:-[VERSION]}
 
 FROM allfunc/rust-musl-crate AS builder
 
-ENV CARGO_TARGET_AARCH64_UNKNOWN_LINUX_MUSL_RUSTFLAGS="-C link-arg=/opt/musl/aarch64-linux-musl/lib/libc.a -C linker=rust-lld -C debuginfo=1"
-
 ARG VERSION
+
+RUN echo 'TARGETPLATFORM: '${TARGETPLATFORM}' PlATFORM: '$(uname -m)
 
 COPY ./docker/mybook /home/rust/src/
 RUN cargo bin --install
@@ -19,10 +19,10 @@ COPY --from=builder \
   /usr/local/bin/
 
 # apk
-COPY ./install-packages.sh /usr/local/bin/install-packages
-RUN apk update && apk add bash bc \
-  && INSTALL_VERSION=$VERSION install-packages \
-  && rm /usr/local/bin/install-packages
+# COPY ./install-packages.sh /usr/local/bin/install-packages
+# RUN apk update && apk add bash bc \
+#   && INSTALL_VERSION=$VERSION install-packages \
+#   && rm /usr/local/bin/install-packages
 
 # init workdir
 WORKDIR /mdbook
