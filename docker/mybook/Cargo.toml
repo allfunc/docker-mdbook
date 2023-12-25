@@ -1,12 +1,12 @@
 [package]
 name = "mybook"
 version = "0.1.0"
-edition = "2021"
+crate-type = ["staticlib"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [package.metadata.bin]
-mdbook = { version = "0.4.35", locked = true }
+mdbook = { version = "0.4.36", locked = true }
 mdbook-plantuml = { version = "0.8.0" }
 mdbook-toc = { version = "0.14.1" }
 mdbook-mermaid = { version = "0.12.6" }
@@ -15,4 +15,4 @@ mdbook-mermaid = { version = "0.12.6" }
 mdbook = "0.4.35"
 mdbook-plantuml = "0.8.0"
 mdbook-toc = "0.14.1"
-mdbook-mermaid = "0.12.6"
+mdbook-mermaid = { version = "0.12.6", features = ["plantuml-ssl-server"] }

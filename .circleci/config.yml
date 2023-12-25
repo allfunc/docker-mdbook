@@ -128,4 +128,4 @@ workflows:
             - test
           matrix:
             parameters:
-              docker-tag: ["0.4.35"]
+              docker-tag: ["0.4.36"]

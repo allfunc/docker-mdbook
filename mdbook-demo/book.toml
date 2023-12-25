@@ -12,7 +12,7 @@ command = "mdbook-mermaid"
 renderer = ["html"]
 
 [preprocessor.plantuml]
-plantuml-cmd="java -jar /app/plantuml.jar"
+plantuml-cmd="java -jar /opt/plantuml.jar"
 
 [output.html]
 mathjax-support = true
