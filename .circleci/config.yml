@@ -13,14 +13,18 @@ commands:
       - run:
           name: Install package
           command: sudo apt-get update && sudo apt-get install -qq -y --no-install-recommends binfmt-support qemu-user-static
-          # command: docker run --rm --privileged aptman/qus -s -- -p aarch64
+      - run:
+          name: Init VM
+          command: |
+            docker context create CIContext
+            docker run --rm --privileged tonistiigi/binfmt --install amd64 
       - run:
           name: Install Docker Buildx
           command: |
             mkdir -vp ~/.docker/cli-plugins/
             curl --silent -L "https://github.com/docker/buildx/releases/download/<< parameters.buildx-version >>/buildx-<< parameters.buildx-version >>.linux-arm64" > ~/.docker/cli-plugins/docker-buildx
             chmod a+x ~/.docker/cli-plugins/docker-buildx
-            docker buildx create --name joyful-<< parameters.docker-tag >>- --use
+            docker buildx create --name joyful-<< parameters.docker-tag >>- --append CIContext --use
 
 executors:
   docker-publisher:
@@ -111,7 +115,7 @@ jobs:
               --cache-from $IMAGE_NAME:${BUILD_VERSION} \
               --push \
               --progress=plain \
-              --platform linux/arm64/v8 \
+              --platform linux/amd64,linux/arm64/v8 \
               -t $IMAGE_NAME:${BUILD_VERSION} ${LATEST_TAG} \
               ./${BUILD_FOLDER}
             ./compile.sh updateDockerHubDesc
