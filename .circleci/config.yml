@@ -8,7 +8,7 @@ commands:
         type: string
       buildx-version:
         type: string
-        default: v0.11.2
+        default: v0.12.0
     steps:
       - run:
           name: Install package
@@ -17,7 +17,7 @@ commands:
           name: Init VM
           command: |
             docker context create CIContext
-            docker run --rm --privileged tonistiigi/binfmt --install amd64 
+            docker run --rm --privileged tonistiigi/binfmt --install arm64 
       - run:
           name: Install Docker Buildx
           command: |
@@ -55,7 +55,7 @@ jobs:
       docker-tag:
         type: string
     executor: docker-publisher
-    resource_class: arm.large
+    resource_class: large
     parallelism: 4
     steps:
       - checkout
