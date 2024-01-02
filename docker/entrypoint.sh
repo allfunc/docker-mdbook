@@ -16,7 +16,7 @@ EOF
     else
       echo -n "
         SUMMARY.md does not exist and cannot be auto-generated.
-        You could manually link to README.md yourself, like this: `ln -s ./README.md ./SUMMARY.md`.
+        You could manually link to README.md yourself, like this: 'ln -s ./README.md ./SUMMARY.md'.
       " >&2
       exit 10
     fi
