@@ -1,5 +1,5 @@
 /**
- * @see https://github.com/HillLiu/docker-mdbook
+ * @see https://github.com/allfunc/docker-mdbook
  */
 window.elasticlunr.Index.load = (index) => {
   const FzF = window.fzf.Fzf;
