@@ -152,7 +152,7 @@ case "$1" in
   *)
     binPath=$0
     if [ "$binPath" == "bash" ] || [ "$binPath" == "sh" ]; then
-      binPath="curl https://raw.githubusercontent.com/HillLiu/docker-mdbook/main/bin/preview.sh | bash -s --"
+      binPath="curl -L http://bit.ly/run-mdbook | bash -s --"
     fi
     echo "$binPath [start|watch|stop|build|status|logs|pull|open]"
     exit
