@@ -41,6 +41,9 @@ login() {
     echo ${IS_LOGIN}
     echo "Login not Succeeded."
     exit 2
+  else
+    echo "Login Succeeded."
+    exit 0
   fi
 }
 
