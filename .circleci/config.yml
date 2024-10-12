@@ -120,8 +120,12 @@ jobs:
           docker-tag: << parameters.docker-tag >>
           build-platform: arm64
   merge-image:
+    parameters:
+      docker-tag:
+        type: string
     executor: docker-publisher
     steps:
+      - checkout
       - run:
           name: Log time
           command: date
@@ -168,3 +172,6 @@ workflows:
           requires:
             - build-amd64
             - build-arm64
+          matrix:
+            parameters:
+              docker-tag: ["0.4.40"]
