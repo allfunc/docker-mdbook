@@ -55,7 +55,6 @@ jobs:
         type: string
     executor: docker-publisher
     resource_class: large
-    parallelism: 2
     steps:
       - checkout
       - setup_remote_docker:
@@ -109,20 +108,12 @@ jobs:
             ./compile.sh login
             ./compile.sh rate
             echo "# ------ End to Login ------ #"
-            case $CIRCLE_NODE_INDEX in
-               0)
-                platform=linux/amd64
-                ;;
-               1)
-                platform=linux/arm64/v8
-                ;;
-            esac
             docker buildx build ${BUILD_ARG} -f ${BUILD_FOLDER}/Dockerfile \
               --cache-to=type=inline,mode=all \
               --cache-from $IMAGE_NAME:${BUILD_VERSION} \
               --push \
               --progress=plain \
-              --platform ${platform} \
+              --platform linux/amd64,linux/arm64/v8 \
               -t $IMAGE_NAME:${BUILD_VERSION} ${LATEST_TAG} \
               ./${BUILD_FOLDER}
             ./compile.sh updateDockerHubDesc
