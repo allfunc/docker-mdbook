@@ -7,7 +7,6 @@ ARG VERSION
 RUN echo 'TARGETPLATFORM: '${TARGETPLATFORM}' PlATFORM: '$(uname -m)
 
 COPY ./docker/mybook /home/rust/src/
-ENV MALLOC_CONF="abort_conf:false,metadata_thp:disabled"
 RUN cargo bin --install
 
 FROM plantuml/plantuml

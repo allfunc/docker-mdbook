@@ -1,63 +1,14 @@
 version: 2.1
 
 commands:
-  install-docker-buildx:
-    description: Install Docker Buildx
+  build-platform:
+    description: build different platform
     parameters:
+      build-platform:
+        type: string
       docker-tag:
         type: string
-      buildx-version:
-        type: string
-        default: v0.17.1
     steps:
-      - run:
-          name: Install package
-          command: sudo apt-get update && sudo apt-get install -qq -y --no-install-recommends binfmt-support qemu-user-static
-      - run:
-          name: Init VM
-          command: |
-            docker context create CIContext
-            docker run --rm --privileged tonistiigi/binfmt --install amd64
-      - run:
-          name: Install Docker Buildx
-          command: |
-            mkdir -vp ~/.docker/cli-plugins/
-            curl --silent -L "https://github.com/docker/buildx/releases/download/<< parameters.buildx-version >>/buildx-<< parameters.buildx-version >>.linux-arm64" > ~/.docker/cli-plugins/docker-buildx
-            chmod a+x ~/.docker/cli-plugins/docker-buildx
-            docker buildx create --name joyful-<< parameters.docker-tag >>- --bootstrap --use CIContext
-
-executors:
-  docker-publisher:
-    docker:
-      # https://github.com/CircleCI-Public/cimg-base
-      - image: cimg/base:current
-
-jobs:
-  test:
-    docker:
-      - image: allfunc/terratest
-    executor: docker-publisher
-    resource_class: arm.large
-    steps:
-      - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - run:
-          name: "Test with terratest"
-          command: |
-            go test -timeout 30m -v ./tests | tee test_output.log
-            terratest_log_parser -testlog test_output.log -outputdir test_output
-      - store_test_results:
-          path: test_output
-  build-and-publish:
-    parameters:
-      docker-tag:
-        type: string
-    executor: docker-publisher
-    resource_class: arm.large
-    parallelism: 2
-    steps:
-      - checkout
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
@@ -83,8 +34,6 @@ jobs:
               cat ${BUILD_FOLDER}/$file
               echo ""
             done
-      - install-docker-buildx:
-          docker-tag: << parameters.docker-tag >>
       - run:
           name: build Docker image
           command: |
@@ -95,12 +44,10 @@ jobs:
             BUILD_VERSION=<< parameters.docker-tag >>
             BUILD_FOLDER=${VER_PREFIX}-<< parameters.docker-tag >>
             BUILD_ARG=""
-            LATEST_TAG=""
             if [ "x$VERSION" == "x$BUILD_VERSION" ]; then
                 if [ -n "${ALT_VERSION}" ]; then
                   BUILD_ARG="--build-arg ALT_VERSION=${ALT_VERSION}"
                 fi
-                LATEST_TAG="-t $IMAGE_NAME:latest"
             fi
             echo "Build ARGS: ${BUILD_ARG}"
             docker pull $IMAGE_NAME:${BUILD_VERSION} || true
@@ -109,15 +56,94 @@ jobs:
             ./compile.sh login
             ./compile.sh rate
             echo "# ------ End to Login ------ #"
+            if [ "xamd64" == "x<< parameters.build-platform >>" ]; then
+              PLATFORM=linux/amd64
+            else
+              PLATFORM=linux/arm64/v8
+            fi
             docker buildx build ${BUILD_ARG} -f ${BUILD_FOLDER}/Dockerfile \
               --cache-to=type=inline,mode=all \
               --cache-from $IMAGE_NAME:${BUILD_VERSION} \
               --push \
               --progress=plain \
-              --platform linux/arm64/v8,linux/amd64 \
-              -t $IMAGE_NAME:${BUILD_VERSION} ${LATEST_TAG} \
+              --platform ${PLATFORM} \
+              -t $IMAGE_NAME:${BUILD_VERSION}-<< parameters.build-platform >> \
               ./${BUILD_FOLDER}
             ./compile.sh updateDockerHubDesc
+      - run:
+          name: logout
+          command: docker logout
+
+executors:
+  docker-publisher:
+    docker:
+      # https://github.com/CircleCI-Public/cimg-base
+      - image: cimg/base:current
+
+jobs:
+  test:
+    docker:
+      - image: allfunc/terratest
+    executor: docker-publisher
+    resource_class: arm.large
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: "Test with terratest"
+          command: |
+            go test -timeout 30m -v ./tests | tee test_output.log
+            terratest_log_parser -testlog test_output.log -outputdir test_output
+      - store_test_results:
+          path: test_output
+  build-amd64:
+    parameters:
+      docker-tag:
+        type: string
+    executor: docker-publisher
+    resource_class: large
+    steps:
+      - checkout
+      - build-platform:
+          docker-tag: << parameters.docker-tag >>
+          build-platform: amd64
+  build-arm64:
+    parameters:
+      docker-tag:
+        type: string
+    executor: docker-publisher
+    resource_class: arm.large
+    steps:
+      - checkout
+      - build-platform:
+          docker-tag: << parameters.docker-tag >>
+          build-platform: arm64
+  merge-image:
+    executor: docker-publisher
+    steps:
+      - run:
+          name: Log time
+          command: date
+      - run:
+          name: Log info
+          command: export
+      - run:
+          name: merge image
+          command: |
+            echo "# ------ Start to Login ------ #"
+            ./compile.sh login
+            echo "# ------ End to Login ------ #"
+            IMAGE_NAME=$(DOCKER_HUB=1 support/remoteImage.sh)
+            BUILD_VERSION=<< parameters.docker-tag >>
+            LATEST_TAG=""
+            if [ "x$VERSION" == "x$BUILD_VERSION" ]; then
+              LATEST_TAG="-t $IMAGE_NAME:latest"
+            fi
+            docker buildx imagetools create \
+              -t $IMAGE_NAME:${BUILD_VERSION} ${LATEST_TAG} \
+              -f $IMAGE_NAME:${BUILD_VERSION}-amd64 \
+              -f $IMAGE_NAME:${BUILD_VERSION}-arm64
       - run:
           name: logout
           command: docker logout
@@ -126,9 +152,19 @@ workflows:
   run-job:
     jobs:
       - test
-      - build-and-publish:
+      - build-amd64:
           requires:
             - test
           matrix:
             parameters:
               docker-tag: ["0.4.40"]
+      - build-arm64:
+          requires:
+            - test
+          matrix:
+            parameters:
+              docker-tag: ["0.4.40"]
+      - merge-image: 
+          requires:
+            - build-amd64
+            - build-arm64
