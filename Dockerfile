@@ -20,12 +20,6 @@ COPY --from=builder \
   /home/rust/src/.bin/rust-${RUST_VER}/mdbook-mermaid/0.14.0/bin/mdbook-mermaid \
   /usr/local/bin/
 
-# apk
-COPY ./install-packages.sh /usr/local/bin/install-packages
-RUN apt-get update \
-  && INSTALL_VERSION=$VERSION install-packages \
-  && rm /usr/local/bin/install-packages
-
 # init workdir
 WORKDIR /mdbook
 COPY ./mdbook-demo /mdbook
