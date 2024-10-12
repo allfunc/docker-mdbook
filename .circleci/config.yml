@@ -17,7 +17,7 @@ commands:
           name: Init VM
           command: |
             docker context create CIContext
-            docker run --rm --privileged tonistiigi/binfmt --install arm64
+            docker run --rm --privileged tonistiigi/binfmt --install amd64
       - run:
           name: Install Docker Buildx
           command: |
@@ -37,7 +37,7 @@ jobs:
     docker:
       - image: allfunc/terratest
     executor: docker-publisher
-    resource_class: large
+    resource_class: arm.large
     steps:
       - checkout
       - setup_remote_docker:
