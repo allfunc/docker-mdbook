@@ -69,7 +69,6 @@ commands:
               --platform ${PLATFORM} \
               -t $IMAGE_NAME:${BUILD_VERSION}-<< parameters.build-platform >> \
               ./${BUILD_FOLDER}
-            ./compile.sh updateDockerHubDesc
       - run:
           name: logout
           command: docker logout
@@ -140,38 +139,40 @@ jobs:
             echo "# ------ End to Login ------ #"
             IMAGE_NAME=$(DOCKER_HUB=1 support/remoteImage.sh)
             BUILD_VERSION=<< parameters.docker-tag >>
-            LATEST_TAG=""
             if [ "x$VERSION" == "x$BUILD_VERSION" ]; then
-              LATEST_TAG="-t $IMAGE_NAME:latest"
+              docker buildx imagetools create \
+                -t $IMAGE_NAME:latest \
+                $IMAGE_NAME:${BUILD_VERSION}-amd64 \
+                $IMAGE_NAME:${BUILD_VERSION}-arm64
             fi
             docker buildx imagetools create \
               -t $IMAGE_NAME:${BUILD_VERSION} \
               $IMAGE_NAME:${BUILD_VERSION}-amd64 \
               $IMAGE_NAME:${BUILD_VERSION}-arm64
+            ./compile.sh updateDockerHubDesc
       - run:
           name: logout
           command: docker logout
+
+base-matrix: &base-matrix
+  matrix:
+    parameters:
+      docker-tag: ["0.4.40"]
 
 workflows:
   run-job:
     jobs:
       - test
       - build-amd64:
+          <<: *base-matrix
           requires:
             - test
-          matrix:
-            parameters:
-              docker-tag: ["0.4.40"]
       - build-arm64:
+          <<: *base-matrix
           requires:
             - test
-          matrix:
-            parameters:
-              docker-tag: ["0.4.40"]
-      - merge-image: 
+      - merge-image:
+          <<: *base-matrix
           requires:
             - build-amd64
             - build-arm64
-          matrix:
-            parameters:
-              docker-tag: ["0.4.40"]
