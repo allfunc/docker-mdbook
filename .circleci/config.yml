@@ -54,7 +54,7 @@ jobs:
       docker-tag:
         type: string
     executor: docker-publisher
-    resource_class: large
+    resource_class: arm.large
     parallelism: 2
     steps:
       - checkout

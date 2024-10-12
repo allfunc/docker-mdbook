@@ -7,6 +7,7 @@ DIR="$(
 
 localImage=$(${DIR}/support/localImage.sh)
 remoteImage=$(${DIR}/support/remoteImage.sh)
+dockerHubImage=$(DOCKER_HUB=1 support/remoteImage.sh)
 archiveFile=$DIR/archive.tar
 VERSION=$(${DIR}/support/VERSION.sh)
 ALT_VERSION=$(${DIR}/support/ALT_VERSION.sh)
@@ -65,8 +66,12 @@ updateDockerHubDesc() {
     full_description=$(jq -s -R . README.md)
   fi
   data="{\"full_description\": ${full_description:-""} }"
+  URL=https://hub.docker.com/v2/repositories/${dockerHubImage:-$remoteImage}
+  echo
+  echo $URL
+  echo
   RESULT=$(
-    curl -kX PATCH https://hub.docker.com/v2/repositories/${remoteImage} \
+    curl -kX PATCH $URL \
       -H "Content-Type: application/json" \
       -H "Authorization: JWT $token" \
       -d "$data"
