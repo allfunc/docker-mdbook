@@ -145,9 +145,9 @@ jobs:
               LATEST_TAG="-t $IMAGE_NAME:latest"
             fi
             docker buildx imagetools create \
-              -t $IMAGE_NAME:${BUILD_VERSION} ${LATEST_TAG} \
-              -f $IMAGE_NAME:${BUILD_VERSION}-amd64 \
-              -f $IMAGE_NAME:${BUILD_VERSION}-arm64
+              -t $IMAGE_NAME:${BUILD_VERSION} \
+              $IMAGE_NAME:${BUILD_VERSION}-amd64 \
+              $IMAGE_NAME:${BUILD_VERSION}-arm64
       - run:
           name: logout
           command: docker logout
