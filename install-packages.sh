@@ -1,33 +1,5 @@
 #!/usr/bin/env sh
 
-###
-# Environment ${INSTALL_VERSION} pass from Dockerfile
-###
-
-INSTALL=""
-
-BUILD_DEPS=""
-
-echo "###"
-echo "# Will install"
-echo "###"
-echo ""
-echo $INSTALL
-echo ""
-echo "###"
-echo "# Will install build tool"
-echo "###"
-echo ""
-echo $BUILD_DEPS
-echo ""
-
-apk add --virtual .build-deps $BUILD_DEPS && apk add $INSTALL
-
-#/* put your install code here */#
-
-# install libssl dev
-cd /tmp && wget http://ports.ubuntu.com/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_arm64.deb && dpkg -i *.deb
-
 # Init workdir
 mv /entrypoint /entrypoint-plantuml
 mkdir -p /mdbook/src
