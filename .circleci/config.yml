@@ -139,16 +139,13 @@ jobs:
             echo "# ------ End to Login ------ #"
             IMAGE_NAME=$(DOCKER_HUB=1 support/remoteImage.sh)
             BUILD_VERSION=<< parameters.docker-tag >>
+            FROM_IMAGE="${IMAGE_NAME}:${BUILD_VERSION}-amd64 ${IMAGE_NAME}:${BUILD_VERSION}-arm64"
             if [ "x$VERSION" == "x$BUILD_VERSION" ]; then
               docker buildx imagetools create \
-                -t $IMAGE_NAME:latest \
-                $IMAGE_NAME:${BUILD_VERSION}-amd64 \
-                $IMAGE_NAME:${BUILD_VERSION}-arm64
+                -t $IMAGE_NAME:latest ${FROM_IMAGE}
             fi
             docker buildx imagetools create \
-              -t $IMAGE_NAME:${BUILD_VERSION} \
-              $IMAGE_NAME:${BUILD_VERSION}-amd64 \
-              $IMAGE_NAME:${BUILD_VERSION}-arm64
+              -t $IMAGE_NAME:${BUILD_VERSION} ${FROM_IMAGE}
             ./compile.sh updateDockerHubDesc
       - run:
           name: logout
