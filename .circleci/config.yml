@@ -39,12 +39,12 @@ commands:
           command: |
             VER_PREFIX=$(support/VER_PREFIX.sh)
             VERSION=$(support/VERSION.sh)
-            ALT_VERSION=$(support/ALT_VERSION.sh)
             IMAGE_NAME=$(DOCKER_HUB=1 support/remoteImage.sh)
             BUILD_VERSION=<< parameters.docker-tag >>
             BUILD_FOLDER=${VER_PREFIX}-<< parameters.docker-tag >>
             BUILD_ARG=""
             if [ "x$VERSION" == "x$BUILD_VERSION" ]; then
+                ALT_VERSION=$(support/ALT_VERSION.sh)
                 if [ -n "${ALT_VERSION}" ]; then
                   BUILD_ARG="--build-arg ALT_VERSION=${ALT_VERSION}"
                 fi
@@ -137,6 +137,7 @@ jobs:
             echo "# ------ Start to Login ------ #"
             ./compile.sh login
             echo "# ------ End to Login ------ #"
+            VERSION=$(support/VERSION.sh)
             IMAGE_NAME=$(DOCKER_HUB=1 support/remoteImage.sh)
             BUILD_VERSION=<< parameters.docker-tag >>
             FROM_IMAGE="${IMAGE_NAME}:${BUILD_VERSION}-amd64 ${IMAGE_NAME}:${BUILD_VERSION}-arm64"
