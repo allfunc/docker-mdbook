@@ -17,7 +17,13 @@ func TestSmoke(t *testing.T) {
 	if err == nil {
 	}
 	buildOptions := &docker.BuildOptions{
-		Tags:      []string{tag},
+		Tags: []string{tag},
+		OtherOptions: []string{
+			"--pull",
+			"--no-cache",
+			"-f",
+			"../Dockerfile",
+		},
 		BuildArgs: []string{fmt.Sprintf("VERSION=%s", bytes.TrimRight(VERSION, "\n"))},
 	}
 
