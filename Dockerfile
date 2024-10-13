@@ -4,8 +4,6 @@ FROM allfunc/rust-musl-crate AS builder
 
 ARG VERSION
 
-RUN echo 'TARGETPLATFORM: '${TARGETPLATFORM}' PlATFORM: '$(uname -m)
-
 COPY ./docker/mybook /home/rust/src/
 RUN cargo bin --install
 
