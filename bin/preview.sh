@@ -90,6 +90,10 @@ logs() {
   docker logs -f ${CONTAINER_NAME}
 }
 
+enter() {
+  docker exec -it ${CONTAINER_NAME} bash
+}
+
 pull() {
   docker pull ${IMAGE_NAME}
 }
@@ -146,6 +150,9 @@ case "$1" in
   pull)
     pull
     ;;
+  enter)
+    enter
+    ;;
   open)
     open
     ;;
@@ -154,7 +161,7 @@ case "$1" in
     if [ "$binPath" == "bash" ] || [ "$binPath" == "sh" ]; then
       binPath="curl -L http://bit.ly/run-mdbook | bash -s --"
     fi
-    echo "$binPath [start|watch|stop|build|status|logs|pull|open]"
+    echo "$binPath [start|watch|stop|build|status|logs|pull|enter|open]"
     exit
     ;;
 esac
