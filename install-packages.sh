@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 
 # Init workdir
+echo $(date +%Y%m%d%S)'-'$TARGETPLATFORM > /build_version
 mv /entrypoint /entrypoint-plantuml
 mkdir -p /mdbook/src
 chmod 0777 -R /mdbook
