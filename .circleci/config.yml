@@ -38,17 +38,10 @@ commands:
           name: build Docker image
           command: |
             VER_PREFIX=$(support/VER_PREFIX.sh)
-            VERSION=$(support/VERSION.sh)
             IMAGE_NAME=$(DOCKER_HUB=1 support/remoteImage.sh)
             BUILD_VERSION=<< parameters.docker-tag >>
             BUILD_FOLDER=${VER_PREFIX}-<< parameters.docker-tag >>
-            BUILD_ARG=""
-            if [ "x$VERSION" == "x$BUILD_VERSION" ]; then
-                ALT_VERSION=$(support/ALT_VERSION.sh)
-                if [ -n "${ALT_VERSION}" ]; then
-                  BUILD_ARG="--build-arg ALT_VERSION=${ALT_VERSION}"
-                fi
-            fi
+            BUILD_ARG=$(cat .env.build | xargs -n 1 echo --build-arg)
             echo "Build ARGS: ${BUILD_ARG}"
             docker pull $IMAGE_NAME:${BUILD_VERSION} || true
             docker buildx inspect --bootstrap

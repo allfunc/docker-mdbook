@@ -6,7 +6,11 @@ mkdir -p /mdbook/src
 chmod 0777 -R /mdbook
 chmod 0777 -R /var/cache/fontconfig
 
-echo $(date +%Y%m%d%S)'-'$TARGETPLATFORM > /build_version
+##
+# fixed mdbook-plantuml runtime need libssl.so.1.1
+# https://github.com/allfunc/docker-mdbook/issues/8
+##
+cd /tmp && wget http://ports.ubuntu.com/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_arm64.deb && dpkg -i *.deb
 
 # Clean
 apt-get clean autoclean \
