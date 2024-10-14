@@ -91,7 +91,12 @@ logs() {
 }
 
 enter() {
-  docker exec -it ${CONTAINER_NAME} bash
+  binPath=$0
+  if [ "$binPath" == "bash" ] || [ "$binPath" == "sh" ]; then
+    echo "docker exec -it ${CONTAINER_NAME} bash"
+  else
+    docker exec -it ${CONTAINER_NAME} bash
+  fi
 }
 
 pull() {
@@ -159,7 +164,7 @@ case "$1" in
   *)
     binPath=$0
     if [ "$binPath" == "bash" ] || [ "$binPath" == "sh" ]; then
-      binPath="curl -L http://bit.ly/run-mdbook | bash -s --"
+      binPath="curl -L http://bit.ly/exec-mdbook | bash -s --"
     fi
     echo "$binPath [start|watch|stop|build|status|logs|pull|enter|open]"
     exit
