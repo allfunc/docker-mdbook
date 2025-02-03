@@ -149,19 +149,27 @@ base-matrix: &base-matrix
   matrix:
     parameters:
       docker-tag: ["0.4.40"]
+base-build: &base-build
+  requires:
+    - test
+  filters:
+    branches:
+      only:
+        - main
 
 workflows:
   run-job:
     jobs:
       - test
+      - push-image:
+          requires:
+            - test
       - build-amd64:
           <<: *base-matrix
-          requires:
-            - test
+          <<: *base-build
       - build-arm64:
           <<: *base-matrix
-          requires:
-            - test
+          <<: *base-build
       - merge-image:
           <<: *base-matrix
           requires:
