@@ -161,9 +161,6 @@ workflows:
   run-job:
     jobs:
       - test
-      - push-image:
-          requires:
-            - test
       - build-amd64:
           <<: *base-matrix
           <<: *base-build
