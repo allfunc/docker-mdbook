@@ -44,6 +44,10 @@
 
 ```
 curl https://raw.githubusercontent.com/allfunc/docker-mdbook/main/bin/preview.sh | bash -s -- start
+
+or
+
+curl -L https://bit.ly/exec-mdbook | bash -s -- start
 ```
 
 ### import HTML
