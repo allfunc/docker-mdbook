@@ -50,7 +50,7 @@ start() {
   if [ -e "${DIR}/book.toml" ]; then
     cmd+=" -v ${DIR}/book.toml:/mdbook/book.toml"
   fi
-  cmd+=" -v ${MDBOOK_SRC}:/mdbook/src --name ${CONTAINER_NAME} --rm"
+  cmd="$cmd -v ${MDBOOK_SRC}:/mdbook/src --name ${CONTAINER_NAME} --rm"
   cmd1="${cmd} -d ${IMAGE_NAME} server"
   cmd2="${cmd} ${IMAGE_NAME} server"
   echo $cmd2
@@ -75,7 +75,7 @@ build() {
 
 stop() {
   local res=$(status | tail -1 | awk '{print $(NF)}')
-  if [ "x$res" == "x$CONTAINER_NAME" ]; then
+  if [ "x$res" = "x${CONTAINER_NAME}" ]; then
     docker stop ${CONTAINER_NAME}
     sleep 1
   fi
