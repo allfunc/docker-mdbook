@@ -14,4 +14,7 @@
   code {
     page-break-inside: avoid;
   }
+  img {
+    max-height: 275mm;
+  }
 }

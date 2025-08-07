@@ -88,6 +88,7 @@ curl -L https://bit.ly/exec-mdbook | bash -s -- start
 -   https://github.com/sytsereitsma/mdbook-plantuml
 -   https://crates.io/crates/mdbook-plantuml
 -   https://plantuml.com/
+-   https://the-lum.github.io/puml-themes-gallery/diagrams/index.html
 
 ### update docker image
 
