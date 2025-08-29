@@ -13,6 +13,7 @@ renderer = ["html"]
 
 [preprocessor.plantuml]
 plantuml-cmd="java -jar /opt/plantuml.jar"
+use-data-uris = true
 
 [output.html]
 mathjax-support = true
@@ -27,3 +28,7 @@ boost-hierarchy = 2
 boost-paragraph = 1
 expand = true
 heading-split-level = 2
+
+[output.pandoc.profile.pptx]
+output-file = "output.pptx"
+to = "pptx"

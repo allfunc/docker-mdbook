@@ -11,6 +11,7 @@
 | mdbook-toc      | 0.14.2  |
 | mdbook-mermaid  | 0.15.0  |
 | mdbook-plantuml | 0.8.0   |
+| mdbook-pandoc   | 0.10.5  |
 
 ## `GIT`
 
@@ -89,6 +90,11 @@ curl -L https://bit.ly/exec-mdbook | bash -s -- start
 -   https://crates.io/crates/mdbook-plantuml
 -   https://plantuml.com/
 -   https://the-lum.github.io/puml-themes-gallery/diagrams/index.html
+
+### mdbook-pandoc
+- docker cp mdbook:/mdbook/book/pandoc/pptx/output.pptx .
+
+
 
 ### update docker image
 

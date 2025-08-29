@@ -12,6 +12,7 @@ chmod 0777 -R /var/cache/fontconfig
 # https://github.com/allfunc/docker-mdbook/issues/8
 ##
 cd /tmp && wget http://ports.ubuntu.com/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_arm64.deb && dpkg -i *.deb
+apt-get update && apt-get --yes install pandoc
 
 # Clean
 apt-get clean autoclean \

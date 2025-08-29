@@ -1,3 +1,9 @@
 archive.tar
 .*.sw?
 /v*-
+
+
+# build
+docker/mybook/target
+mdbook-demo/.mdbook-plantuml-cache
+build
