@@ -4,6 +4,7 @@
 echo $(date +%Y%m%d%S)'-'$TARGETPLATFORM > /build_version
 mv /entrypoint /entrypoint-plantuml
 mkdir -p /mdbook/src
+mkdir -p /mdbook/book
 chmod 0777 -R /mdbook
 chmod 0777 -R /var/cache/fontconfig
 

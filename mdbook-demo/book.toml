@@ -17,8 +17,14 @@ use-data-uris = true
 
 [output.html]
 mathjax-support = true
-additional-css = ["assets/mermaid.css", "assets/print.css", "assets/all-page.css"]
+additional-css = ["assets/mermaid.css", "assets/all-page.css"]
 additional-js = ["assets/fzf.umd.js", "assets/elasticlunr.js", "assets/mermaid.min.js", "assets/import-html.js"]
+
+[output.html.print]
+enable = true    # include support for printable output
+page-break = true # insert page-break after each chapter
+additional-css = ["assets/mermaid.css", "assets/print.css", "assets/all-page.css"]
+
 
 [output.html.search]
 limit-results = 20
