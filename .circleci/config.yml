@@ -148,7 +148,7 @@ jobs:
 base-matrix: &base-matrix
   matrix:
     parameters:
-      docker-tag: ["0.4.40"]
+      docker-tag: ["0.4.52"]
 base-build: &base-build
   requires:
     - test
