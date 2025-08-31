@@ -35,6 +35,6 @@ boost-paragraph = 1
 expand = true
 heading-split-level = 2
 
-[output.pandoc.profile.pptx]
-output-file = "output.pptx"
-to = "pptx"
+# [output.pandoc.profile.pptx]
+# output-file = "output.pptx"
+# to = "pptx"
