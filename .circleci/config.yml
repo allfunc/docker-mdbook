@@ -10,7 +10,7 @@ commands:
         type: string
     steps:
       - setup_remote_docker:
-          docker_layer_caching: true
+          docker_layer_caching: false 
       - run:
           name: Log time
           command: date
@@ -81,7 +81,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:
-          docker_layer_caching: true
+          docker_layer_caching: false
       - run:
           name: "Test with terratest"
           command: |

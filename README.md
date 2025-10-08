@@ -9,18 +9,19 @@
 | --------------- | ------- |
 | mdbook          | 0.4.52  |
 | mdbook-toc      | 0.14.2  |
-| mdbook-mermaid  | 0.15.0  |
+| mdbook-mermaid  | 0.16.0  |
+| mermaid (NPM/JS)| 11.12.0 |
 | mdbook-plantuml | 0.8.0   |
 | mdbook-pandoc   | 0.10.5  |
 
 ## `GIT`
 
--   https://github.com/allfunc/docker-mdbook
+- https://github.com/allfunc/docker-mdbook
 
 ## `Docker hub`
 
--   Docker Image: allfunc/mdbook
--   https://hub.docker.com/r/allfunc/mdbook
+- Docker Image: allfunc/mdbook
+- https://hub.docker.com/r/allfunc/mdbook
 
 ## Usage
 
@@ -29,7 +30,7 @@
 ```markdown
 # Summary
 
--   [Chapter 1](./chapter_1.md)
+- [Chapter 1](./chapter_1.md)
 ```
 
 2. Copy bin/preview.sh to same folder.
@@ -53,48 +54,49 @@ curl -L https://bit.ly/exec-mdbook | bash -s -- start
 
 ### import HTML
 
--   create any folder (such as public) inside src folder
+- create any folder (such as public) inside src folder
 
 ```
 <div data-import="/public/import-demo.html"></div>
 ```
 
--   sample md file
-    -   https://raw.githubusercontent.com/allfunc/docker-mdbook/main/mdbook-demo/src/importDemo_2.md
--   sample public folder (could be any)
-    -   https://github.com/allfunc/docker-mdbook/tree/main/mdbook-demo/src/public
--   sample import HTML file
-    -   https://github.com/allfunc/docker-mdbook/blob/main/mdbook-demo/src/public/import-demo.html
+- sample md file
+    - https://raw.githubusercontent.com/allfunc/docker-mdbook/main/mdbook-demo/src/importDemo_2.md
+- sample public folder (could be any)
+    - https://github.com/allfunc/docker-mdbook/tree/main/mdbook-demo/src/public
+- sample import HTML file
+    - https://github.com/allfunc/docker-mdbook/blob/main/mdbook-demo/src/public/import-demo.html
 
 ## APP
 
 ### mdbook
 
--   https://github.com/rust-lang/mdBook
--   https://crates.io/crates/mdbook
--   DOC http://rust-lang-nursery.github.io/mdBook/index.html
+- https://github.com/rust-lang/mdBook
+- https://crates.io/crates/mdbook
+- DOC http://rust-lang-nursery.github.io/mdBook/index.html
 
 ### mdbook-toc
 
--   https://github.com/badboy/mdbook-toc
--   https://crates.io/crates/mdbook-toc
+- https://github.com/badboy/mdbook-toc
+- https://crates.io/crates/mdbook-toc
 
 ### mdbook-mermaid
 
--   https://github.com/badboy/mdbook-mermaid
--   https://crates.io/crates/mdbook-mermaid
+- https://github.com/badboy/mdbook-mermaid
+- https://crates.io/crates/mdbook-mermaid
+- https://cdn.jsdelivr.net/npm/mermaid@latest/dist/
+
 
 ### mdbook-plantuml
 
--   https://github.com/sytsereitsma/mdbook-plantuml
--   https://crates.io/crates/mdbook-plantuml
--   https://plantuml.com/
--   https://the-lum.github.io/puml-themes-gallery/diagrams/index.html
+- https://github.com/sytsereitsma/mdbook-plantuml
+- https://crates.io/crates/mdbook-plantuml
+- https://plantuml.com/
+- https://the-lum.github.io/puml-themes-gallery/diagrams/index.html
 
 ### mdbook-pandoc
+
 - docker cp mdbook:/mdbook/book/pandoc/pptx/output.pptx .
-
-
 
 ### update docker image
 
@@ -118,9 +120,9 @@ docker run -p 3888:3888 -e PORT=3888 \
 
 ## Official Doc
 
--   SUMMARY.md
-    -   https://rust-lang.github.io/mdBook/format/summary.html
--   Render
-    -   https://rust-lang.github.io/mdBook/format/configuration/renderers.html
+- SUMMARY.md
+    - https://rust-lang.github.io/mdBook/format/summary.html
+- Render
+    - https://rust-lang.github.io/mdBook/format/configuration/renderers.html
 
 MIT 2023

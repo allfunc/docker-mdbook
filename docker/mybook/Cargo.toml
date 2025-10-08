@@ -9,12 +9,10 @@ crate-type = ["staticlib"]
 mdbook = { version = "0.4.52", locked = true }
 mdbook-plantuml = { version = "0.8.0" }
 mdbook-toc = { version = "0.14.2" }
-mdbook-mermaid = { version = "0.15.0" }
-mdbook-pandoc = { version = "0.10.5" }
+mdbook-mermaid = { version = "0.16.0" }
 
 [dependencies]
 mdbook = "0.4.52"
 mdbook-plantuml = "0.8.0"
 mdbook-toc = "0.14.2"
-mdbook-mermaid = { version = "0.15.0" }
-mdbook-pandoc = { version = "0.10.5" }
+mdbook-mermaid = { version = "0.16.0" }

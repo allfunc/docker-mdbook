@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   mdbook:
     image: allfunc/mdbook
