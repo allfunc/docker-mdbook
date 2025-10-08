@@ -9,7 +9,7 @@
 | --------------- | ------- |
 | mdbook          | 0.4.52  |
 | mdbook-toc      | 0.14.2  |
-| mdbook-mermaid  | 0.15.0  |
+| mdbook-mermaid  | 0.16.0  |
 | mdbook-plantuml | 0.8.0   |
 | mdbook-pandoc   | 0.10.5  |
 
