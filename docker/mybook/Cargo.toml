@@ -4,15 +4,16 @@ version = "0.1.0"
 crate-type = ["staticlib"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+# cargo update
 
 [package.metadata.bin]
-mdbook = { version = "0.4.52", locked = true }
-mdbook-plantuml = { version = "0.8.0" }
-mdbook-toc = { version = "0.14.2" }
-mdbook-mermaid = { version = "0.16.0" }
+mdbook = { version = "0.5.4", locked = true }
+mdbook-toc = { version = "0.15.4" }
+mdbook-mermaid = { version = "0.17.1" }
+mdbook-plantuml = { version = "2.0.0" }
 
 [dependencies]
-mdbook = "0.4.52"
-mdbook-plantuml = "0.8.0"
-mdbook-toc = "0.14.2"
-mdbook-mermaid = { version = "0.16.0" }
+mdbook = "0.5.4"
+mdbook-toc = "0.15.4"
+mdbook-mermaid = { version = "0.17.1" }
+mdbook-plantuml = "2.0.0"

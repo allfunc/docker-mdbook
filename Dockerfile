@@ -5,17 +5,23 @@ FROM allfunc/rust-musl-crate AS builder
 ARG VERSION
 
 COPY ./docker/mybook /home/rust/src/
+
+# The builder image writes [build] target = <musl triple> into
+# $CARGO_HOME/config.toml, which `cargo install` (run by cargo-run-bin) reads.
 RUN cargo bin --install
 
 FROM plantuml/plantuml
 
-ARG RUST_VER=1.89.0
+ARG RUST_VER=1.99.0
+
+# the base image runs as appuser; keep root for setup and runtime
+USER root
 
 COPY --from=builder \
-  /home/rust/src/.bin/rust-${RUST_VER}/mdbook/0.4.52/bin/mdbook \
-  /home/rust/src/.bin/rust-${RUST_VER}/mdbook-plantuml/0.8.0/bin/mdbook-plantuml \
-  /home/rust/src/.bin/rust-${RUST_VER}/mdbook-toc/0.14.2/bin/mdbook-toc \
-  /home/rust/src/.bin/rust-${RUST_VER}/mdbook-mermaid/0.16.0/bin/mdbook-mermaid \
+  /home/rust/src/.bin/rust-${RUST_VER}/mdbook/0.5.4/bin/mdbook \
+  /home/rust/src/.bin/rust-${RUST_VER}/mdbook-toc/0.15.4/bin/mdbook-toc \
+  /home/rust/src/.bin/rust-${RUST_VER}/mdbook-mermaid/0.17.1/bin/mdbook-mermaid \
+  /home/rust/src/.bin/rust-${RUST_VER}/mdbook-plantuml/2.0.0/bin/mdbook-plantuml \
   /usr/local/bin/
 
 # init packages 

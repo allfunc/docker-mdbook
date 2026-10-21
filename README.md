@@ -5,14 +5,64 @@
 
 > A set of tool for mdbook.
 
-| Package         | Version |
-| --------------- | ------- |
-| mdbook          | 0.4.52  |
-| mdbook-toc      | 0.14.2  |
-| mdbook-mermaid  | 0.16.0  |
-| mermaid (NPM/JS)| 11.12.0 |
-| mdbook-plantuml | 0.8.0   |
-| mdbook-pandoc   | 0.10.5  |
+| Package          | Version |
+| ---------------- | ------- |
+| mdbook           | 0.5.4   |
+| mdbook-toc       | 0.15.4  |
+| mdbook-mermaid   | 0.17.1  |
+| mermaid (NPM/JS) | 11.12.0 |
+| mdbook-plantuml  | 2.0.0   |
+| Rust (builder)   | 1.99.0  |
+
+## Upgrade
+
+Bump all of these together — a missed file ships a stale image tag.
+
+| File                       | What to change                                                                                          |
+| -------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `docker/mybook/Cargo.toml` | version pins in `[package.metadata.bin]` **and** `[dependencies]`                                       |
+| `docker/mybook/Cargo.lock` | regenerate with `cargo update` (below)                                                                  |
+| `Dockerfile`               | builder image tag, `ARG RUST_VER`, and the four `.bin/rust-${RUST_VER}/<crate>/<version>/bin/...` paths |
+| `README.md`                | the version table above                                                                                 |
+| `.env.build`               | `VERSION=` — drives the Docker tag, the CircleCI matrix and the test build arg                          |
+| `.circleci/config.yml`     | `docker-tag:` under `base-matrix`                                                                       |
+
+### `cargo update`
+
+`docker/mybook` is a dummy crate whose only job is to pin the mdBook binaries.
+`cargo-run-bin` installs from `[package.metadata.bin]` (the `RUN cargo bin --install`
+step in the `Dockerfile`), and `mdbook` is `locked = true`, so the committed
+`Cargo.lock` decides which version gets installed.
+
+```sh
+cd docker/mybook
+
+# 1. edit [package.metadata.bin] and [dependencies] in Cargo.toml to the new versions
+#    (e.g. mdbook = "0.5.4"), then
+
+# 2. refresh the lockfile
+cargo update
+
+# 3. check what got resolved
+grep -A1 '^name = "mdbook' Cargo.lock
+```
+
+`cargo update` on its own only moves versions inside the semver ranges already in
+`Cargo.toml` — edit `Cargo.toml` first when jumping minor/major.
+
+To generate the lockfile with the same toolchain the build uses:
+
+```sh
+docker run --rm -v "$PWD/docker/mybook:/home/rust/src" -w /home/rust/src \
+  allfunc/rust-musl-crate:1.88.0 cargo update
+```
+
+Then build and smoke-test:
+
+```sh
+./compile.sh b
+docker run --rm allfunc/mdbook -V
+```
 
 ## `GIT`
 
@@ -34,8 +84,8 @@
 ```
 
 2. Copy bin/preview.sh to same folder.
-    - or download https://raw.githubusercontent.com/allfunc/docker-mdbook/main/bin/preview.sh
-    - chmod +x preview.sh
+   - or download https://raw.githubusercontent.com/allfunc/docker-mdbook/main/bin/preview.sh
+   - chmod +x preview.sh
 3. Run following command
 
 ```
@@ -61,11 +111,11 @@ curl -L https://bit.ly/exec-mdbook | bash -s -- start
 ```
 
 - sample md file
-    - https://raw.githubusercontent.com/allfunc/docker-mdbook/main/mdbook-demo/src/importDemo_2.md
+  - https://raw.githubusercontent.com/allfunc/docker-mdbook/main/mdbook-demo/src/importDemo_2.md
 - sample public folder (could be any)
-    - https://github.com/allfunc/docker-mdbook/tree/main/mdbook-demo/src/public
+  - https://github.com/allfunc/docker-mdbook/tree/main/mdbook-demo/src/public
 - sample import HTML file
-    - https://github.com/allfunc/docker-mdbook/blob/main/mdbook-demo/src/public/import-demo.html
+  - https://github.com/allfunc/docker-mdbook/blob/main/mdbook-demo/src/public/import-demo.html
 
 ## APP
 
@@ -86,7 +136,6 @@ curl -L https://bit.ly/exec-mdbook | bash -s -- start
 - https://crates.io/crates/mdbook-mermaid
 - https://cdn.jsdelivr.net/npm/mermaid@latest/dist/
 
-
 ### mdbook-plantuml
 
 - https://github.com/sytsereitsma/mdbook-plantuml
@@ -94,7 +143,13 @@ curl -L https://bit.ly/exec-mdbook | bash -s -- start
 - https://plantuml.com/
 - https://the-lum.github.io/puml-themes-gallery/diagrams/index.html
 
-### mdbook-pandoc
+### mdbook-pandoc (disabled)
+
+Pandoc is not installed in this image — see the commented `apt-get` line in
+`install-packages.sh` — so `mdbook-pandoc` is not bundled. The commented
+`[output.pandoc.profile.pptx]` block in `mdbook-demo/book.toml` is kept for reference.
+
+If you enable it yourself, the pptx output sits at:
 
 - docker cp mdbook:/mdbook/book/pandoc/pptx/output.pptx .
 
@@ -121,8 +176,8 @@ docker run -p 3888:3888 -e PORT=3888 \
 ## Official Doc
 
 - SUMMARY.md
-    - https://rust-lang.github.io/mdBook/format/summary.html
+  - https://rust-lang.github.io/mdBook/format/summary.html
 - Render
-    - https://rust-lang.github.io/mdBook/format/configuration/renderers.html
+  - https://rust-lang.github.io/mdBook/format/configuration/renderers.html
 
-MIT 2023
+MIT 2026
